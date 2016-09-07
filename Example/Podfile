@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'KRClient_Example' do
+  pod 'KRClient', :path => '../'
+
+  target 'KRClient_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
