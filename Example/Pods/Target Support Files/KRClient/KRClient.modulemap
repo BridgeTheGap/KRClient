@@ -1,0 +1,6 @@
+framework module KRClient {
+  umbrella header "KRClient-umbrella.h"
+
+  export *
+  module * { export * }
+}
