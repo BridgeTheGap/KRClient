@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		030F0B6B1D80FDA000C4D91A /* KRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B6A1D80FDA000C4D91A /* KRClient.swift */; };
 		030F0B6D1D80FE2900C4D91A /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B6C1D80FE2900C4D91A /* API.swift */; };
-		030F0B6F1D8114EA00C4D91A /* KRClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B6E1D8114EA00C4D91A /* KRClientError.swift */; };
+		030F0B6F1D8114EA00C4D91A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B6E1D8114EA00C4D91A /* Error.swift */; };
 		030F0B711D811DC500C4D91A /* KRClientConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B701D811DC500C4D91A /* KRClientConvenience.swift */; };
+		030F0B751D81921300C4D91A /* JSONConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B741D81921300C4D91A /* JSONConvenience.swift */; };
 		17E5213EBC84E8AD6FF7DFED3EEEEA7F /* Pods-KRClient_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E18A34B1377B27986F5CD4DA12F3757 /* Pods-KRClient_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F657ED01D0A1B78C2144FD485C91EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
 		5BDF08AE3DEE57D81074B54FC4DA0AA6 /* KRClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 11B167A9EFC6E3B00B0E2105E24CC655 /* KRClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -35,8 +36,9 @@
 /* Begin PBXFileReference section */
 		030F0B6A1D80FDA000C4D91A /* KRClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRClient.swift; sourceTree = "<group>"; };
 		030F0B6C1D80FE2900C4D91A /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		030F0B6E1D8114EA00C4D91A /* KRClientError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRClientError.swift; sourceTree = "<group>"; };
+		030F0B6E1D8114EA00C4D91A /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		030F0B701D811DC500C4D91A /* KRClientConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRClientConvenience.swift; sourceTree = "<group>"; };
+		030F0B741D81921300C4D91A /* JSONConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONConvenience.swift; sourceTree = "<group>"; };
 		11B167A9EFC6E3B00B0E2105E24CC655 /* KRClient-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KRClient-umbrella.h"; sourceTree = "<group>"; };
 		1CE848F43CA986565EB129723BD86BC9 /* Pods-KRClient_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-KRClient_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		1FFD48F55FB920148A93229D8A839FD0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -225,8 +227,9 @@
 			children = (
 				030F0B6A1D80FDA000C4D91A /* KRClient.swift */,
 				030F0B6C1D80FE2900C4D91A /* API.swift */,
-				030F0B6E1D8114EA00C4D91A /* KRClientError.swift */,
+				030F0B6E1D8114EA00C4D91A /* Error.swift */,
 				030F0B701D811DC500C4D91A /* KRClientConvenience.swift */,
+				030F0B741D81921300C4D91A /* JSONConvenience.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -362,11 +365,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				030F0B6F1D8114EA00C4D91A /* KRClientError.swift in Sources */,
+				030F0B6F1D8114EA00C4D91A /* Error.swift in Sources */,
 				FA10333814B94C8432C9166E8EFAFB1E /* KRClient-dummy.m in Sources */,
 				030F0B711D811DC500C4D91A /* KRClientConvenience.swift in Sources */,
 				030F0B6D1D80FE2900C4D91A /* API.swift in Sources */,
 				030F0B6B1D80FDA000C4D91A /* KRClient.swift in Sources */,
+				030F0B751D81921300C4D91A /* JSONConvenience.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

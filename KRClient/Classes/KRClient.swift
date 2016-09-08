@@ -8,26 +8,23 @@
 
 import UIKit
 
-public typealias URLResponseSuccessHandler = (NSData, NSURLResponse) -> Void
-public typealias URLResponseFailureHandler = (NSError, NSURLResponse?) -> Void
+protocol URLResponseHandler {}
 
-public struct KRURLResponseHandler {
+public enum KRClientSuccessHandler {
     
-    public static func data(closure: (data: NSData, response: NSURLResponse) -> Void) -> (data: NSData, response: NSURLResponse) -> Void {
-        return closure
-    }
-    
-    public static func JSON(closure: (jsonObj: [String: AnyObject], response: NSURLResponse) -> Void) -> (jsonObj: [String: AnyObject], response: NSURLResponse) -> Void {
-        return closure
-    }
-    
-    public static func failure(closure: (error: NSError, response: NSURLResponse?) -> Void) -> (error: NSError, response: NSURLResponse?) -> Void {
-        return closure
-    }
+    case data((data: NSData, response: NSURLResponse) -> Void)
+    case JSON((json: [String: AnyObject], response: NSURLResponse) -> Void)
+    case string((string: String, response: NSURLResponse) -> Void)
     
 }
 
-public typealias ResponseValidation = (validated: Bool, errorStruct: KRClientError?)
+public enum KRClientFailureHandler {
+    
+    case failure((error: NSError, response: NSURLResponse?) -> Void)
+    
+}
+
+public typealias ResponseValidation = (validated: Bool, errorStruct: Error?)
 public typealias URLResponseValidator = (data: NSData, response: NSHTTPURLResponse) -> ResponseValidation
 
 public struct Request {
@@ -59,33 +56,77 @@ public class KRClient: NSObject {
         session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: delegateQueue)
     }
     
-    public func makeHTTPRequest(apiIdentifier: String, requestAPI: API, successHandler: URLResponseSuccessHandler, failureHandler: URLResponseFailureHandler) {
+    public func makeHTTPRequest(apiIdentifier: String, requestAPI: API, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
         let request = APIManager.sharedManager().getMutableURLRequest(apiIdentifier, api: requestAPI)
         makeHTTPRequest(request, successHandler: successHandler, failureHandler: failureHandler)
     }
     
-    public func makeHTTPRequest(urlRequest: NSURLRequest, successHandler: URLResponseSuccessHandler, failureHandler: URLResponseFailureHandler) {
+    public func makeHTTPRequest(urlRequest: NSURLRequest, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
         session.dataTaskWithRequest(urlRequest) { (optData, optResponse, optError) in
-            if let data = optData {
-                dispatch_async(dispatch_get_main_queue()) { successHandler(data, optResponse!) }
-            } else {
-                dispatch_async(dispatch_get_main_queue()) { failureHandler(optError!, optResponse) }
+            do {
+                if let data = optData {
+                    switch successHandler {
+                        
+                    case .data(let handler):
+                        dispatch_async(dispatch_get_main_queue()) { handler(data: data, response: optResponse!) }
+                        
+                    case .JSON(let handler):
+                        let json = try JSONDictionary(data)
+                        dispatch_async(dispatch_get_main_queue()) { handler(json: json, response: optResponse!) }
+                        
+                    case .string(let handler):
+                        guard let string = String(data: data, encoding: NSUTF8StringEncoding) else {
+                            throw getErrorFromStruct(Error.DataFailedToConvertToString)
+                        }
+                        dispatch_async(dispatch_get_main_queue()) { handler(string: string, response: optResponse!) }
+                        
+                    }
+                } else {
+                    guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
+                    dispatch_async(dispatch_get_main_queue()) { handler(error: optError!, response: optResponse) }
+                }
+            } catch let error {
+                guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
+                dispatch_async(dispatch_get_main_queue()) { handler(error: error as! NSError, response: optResponse) }
             }
         }.resume()
     }
 
-    public func makeHTTPRequest(request: Request, successHandler: URLResponseSuccessHandler, failureHandler: URLResponseFailureHandler) {
+    public func makeHTTPRequest(request: Request, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
         session.dataTaskWithRequest(request.urlRequest) { (optData, optResponse, optError) in
-            if let data = optData {
-                let validation = request.validation(data: data, response: optResponse as! NSHTTPURLResponse)
-                
-                if validation.validated {
-                    dispatch_async(dispatch_get_main_queue()) { successHandler(data, optResponse!) }
+            do {
+                if let data = optData {
+                    let validation = request.validation(data: data, response: optResponse as! NSHTTPURLResponse)
+                    
+                    if validation.validated {
+                        switch successHandler {
+                            
+                        case .data(let handler):
+                            dispatch_async(dispatch_get_main_queue()) { handler(data: data, response: optResponse!) }
+                            
+                        case .JSON(let handler):
+                            let json = try JSONDictionary(data)
+                            dispatch_async(dispatch_get_main_queue()) { handler(json: json, response: optResponse!) }
+                            
+                        case .string(let handler):
+                            guard let string = String(data: data, encoding: NSUTF8StringEncoding) else {
+                                throw getErrorFromStruct(Error.DataFailedToConvertToString)
+                            }
+                            dispatch_async(dispatch_get_main_queue()) { handler(string: string, response: optResponse!) }
+                            
+                        }
+                    } else {
+                        guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
+                        let error = getErrorFromStruct(validation.errorStruct)
+                        dispatch_async(dispatch_get_main_queue()) { handler(error: error, response: optResponse!) }
+                    }
                 } else {
-                    dispatch_async(dispatch_get_main_queue()) { failureHandler(getErrorFromStruct(validation.errorStruct), optResponse!) }
+                    guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
+                    dispatch_async(dispatch_get_main_queue()) { handler(error: optError!, response: optResponse) }
                 }
-            } else {
-                dispatch_async(dispatch_get_main_queue()) { failureHandler(optError!, optResponse) }
+            } catch let error {
+                guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
+                dispatch_async(dispatch_get_main_queue()) { handler(error: error as! NSError, response: optResponse) }
             }
         }.resume()
     }
