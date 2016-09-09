@@ -19,7 +19,7 @@ private struct API_Host {
 
 extension API {
     static var Maps: API {
-        return API(method: .GET, path: "/path/subpath")
+        return API(method: .GET, path: "/")
     }
 }
 
@@ -28,19 +28,22 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        APIManager.sharedManager().setHost(API_Host.Google, forIdentifier: API_ID.Google)
+        KRClient.sharedInstance().setHost(API_Host.Google, forIdentifier: API_ID.Google)
         
         let api = API.Maps
         
         let req = Request(apiIdentifier: API_ID.Google, requestAPI: api) { (data, response) -> ResponseValidation in
-            (response.MIMEType == "application/json", Error.DataFailedToPassValidation(description: "Wrong media type", failureReason: nil))
+            let predicate = response.MIMEType == "text/html"
+            let error = Error.DataFailedToPassValidation(description: "Wrong media type", failureReason: nil)
+            return ResponseValidation(predicate: predicate, errorStruct: error)
         }
         
         let success = KRClientSuccessHandler.string { (string, response) in
-            print(string)
+            print(string, response)
         }
+        
         let failure = KRClientFailureHandler.failure { (error, response) in
-            print(error.localizedDescription)
+            print(error.localizedDescription, response)
         }
         
 //        KRClient.sharedInstance().makeHTTPRequest(API_ID.Google, requestAPI: api, successHandler: success, failureHandler: failure)

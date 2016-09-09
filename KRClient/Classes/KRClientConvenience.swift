@@ -15,6 +15,9 @@ public extension String {
         var string: String
         
         public subscript(end: Int?) -> String {
+            guard !string.isEmpty else { return string }
+            guard start ?? 0 < end ?? string.characters.count else { return string }
+            
             let startIndex = start ?? 0 < 0 ? string.endIndex.advancedBy(start!) : string.startIndex.advancedBy(start ?? 0)
             let endIndex = end ?? string.characters.count < 0 ? string.endIndex.advancedBy(end!) : string.startIndex.advancedBy(end ?? string.characters.count)
             
