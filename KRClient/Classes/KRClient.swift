@@ -139,7 +139,7 @@ public class KRClient: NSObject {
                 }
             } catch let error {
                 guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
-                dispatch_async(dispatch_get_main_queue()) { handler(error: error as! NSError, response: optResponse) }
+                dispatch_async(dispatch_get_main_queue()) { handler(error: error as NSError, response: optResponse) }
             }
         }.resume()
     }
