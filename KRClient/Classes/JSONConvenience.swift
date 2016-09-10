@@ -15,8 +15,8 @@ public func JSONData(object: AnyObject) throws -> NSData? {
     return try NSJSONSerialization.dataWithJSONObject(object, options: [])
 }
 
-public func URLEscapedString(s: String) -> String? {
-    return s.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? nil
+public func URLEscapedString(s: String) -> String {
+    return s.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
 }
 
 public func JSONDictionary(data: NSData) throws -> [String: AnyObject] {

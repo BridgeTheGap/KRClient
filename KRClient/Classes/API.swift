@@ -6,19 +6,18 @@
 //
 //
 
-public enum URLMethod: String {
+public enum HTTPMethod: String {
     case GET = "GET"
     case POST = "POST"
-    case PUT = "PUT"
 }
 
 public struct API {
     
-    public var method: URLMethod
+    public var method: HTTPMethod
     public var path: String
     public var SSL: Bool
     
-    public init(method: URLMethod, path: String, SSL: Bool = false) {
+    public init(method: HTTPMethod, path: String, SSL: Bool = false) {
         var strPath = path
         if strPath[0][1] != "/" { strPath = "/" + strPath }
         (self.method, self.path, self.SSL) = (method, strPath, SSL)

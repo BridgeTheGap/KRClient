@@ -23,32 +23,38 @@ extension API {
     }
 }
 
+extension Request {
+    static var AppVersion: Request {
+        let api = API(method: .GET, path: "/api/common/v1.0/getAppVersionInfo")
+        let params: [String: AnyObject] = ["input": try! JSONString(["type": "product"])!]
+        let req = try! Request(requestAPI: api, parameters: params)
+        
+        return req
+    }
+}
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        KRClient.sharedInstance().setHost(API_Host.Google, forIdentifier: API_ID.Google)
+//        KRClient.sharedInstance().setHost(API_Host.Google, forIdentifier: API_ID.Google)
+//        
+//        let api = API.Maps
+//        
+//        let req = try! Request(apiIdentifier: API_ID.Google, requestAPI: api)
         
-        let api = API.Maps
-        
-        let req = Request(apiIdentifier: API_ID.Google, requestAPI: api) { (data, response) -> ResponseValidation in
-            let predicate = response.MIMEType == "text/html"
-            let error = Error.DataFailedToPassValidation(description: "Wrong media type", failureReason: nil)
-            return ResponseValidation(predicate: predicate, errorStruct: error)
-        }
-        
-        let success = KRClientSuccessHandler.string { (string, response) in
-            print(string, response)
+        KRClient.sharedInstance().setDefaultHost("dev-sylvan.knowreapp.com")
+
+        let success = KRClientSuccessHandler.JSON { (json, response) in
+            print(json, response)
         }
         
         let failure = KRClientFailureHandler.failure { (error, response) in
             print(error.localizedDescription, response)
         }
         
-//        KRClient.sharedInstance().makeHTTPRequest(API_ID.Google, requestAPI: api, successHandler: success, failureHandler: failure)
-//        KRClient.sharedInstance().makeHTTPRequest(req, successHandler: success, failureHandler: failure)
-        KRClient.sharedInstance().makeHTTPRequest(req, successHandler: success, failureHandler: failure)
+        KRClient.sharedInstance().makeHTTPRequest(Request.AppVersion, successHandler: success, failureHandler: failure)
     }
 
     override func didReceiveMemoryWarning() {

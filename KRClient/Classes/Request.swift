@@ -28,10 +28,14 @@ public struct Request {
         (self.urlRequest, self.responseTest) = (urlRequest, responseTest)
     }
     
-    public init(apiIdentifier: String, requestAPI: API, responseTest: URLResponseTest? = nil) {
-        let urlRequest = KRClient.sharedInstance().getMutableURLRequest(apiIdentifier, api: requestAPI)
+    public init(apiIdentifier: String = kDEFAULT_API_ID, requestAPI: API, parameters: [String: AnyObject]? = nil, responseTest: URLResponseTest? = nil) throws {
+        let urlRequest = try KRClient.sharedInstance().getMutableURLRequest(apiIdentifier, api: requestAPI, parameters: parameters)
         (self.urlRequest, self.responseTest) = (urlRequest, responseTest)
     }
     
+    public init(method: HTTPMethod, urlString: String, parameters: [String: AnyObject]? = nil, responseTest: URLResponseTest? = nil) throws {
+        let urlRequest = try KRClient.sharedInstance().getMutableURLRequest(method, urlString: urlString, parameters: parameters)
+        (self.urlRequest, self.responseTest) = (urlRequest, responseTest)
+    }
 }
 
