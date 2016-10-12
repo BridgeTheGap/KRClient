@@ -15,16 +15,17 @@ public extension String {
         var string: String
         
         public subscript(end: Int?) -> String {
-            guard !string.isEmpty else { return string }
-            guard start ?? 0 < end ?? string.characters.count else { return string }
+            let start = self.start ?? 0
+            let end = end ?? string.characters.count
+            guard end < 0 ? string.characters.count > start + abs(end) : start < end && end <= string.characters.count else { return "" }
             
-            let startIndex = start ?? 0 < 0 ? string.endIndex.advancedBy(start!) : string.startIndex.advancedBy(start ?? 0)
-            let endIndex = end ?? string.characters.count < 0 ? string.endIndex.advancedBy(end!) : string.startIndex.advancedBy(end ?? string.characters.count)
+            let startIndex = start < 0 ? string.characters.index(string.endIndex, offsetBy: start) : string.characters.index(string.startIndex, offsetBy: start)
+            let endIndex = end < 0 ? string.characters.index(string.endIndex, offsetBy: end) : string.characters.index(string.startIndex, offsetBy: end)
             
-            return startIndex > endIndex ? "" : string.substringWithRange(startIndex ..< endIndex)
+            return startIndex > endIndex ? "" : string.substring(with: startIndex ..< endIndex)
         }
     }
-
+    
     public subscript(start: Int?) -> Substring {
         return Substring(start: start, string: self)
     }
