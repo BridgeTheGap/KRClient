@@ -22,7 +22,7 @@ pod "KRClient"
 
 ## Author
 
-Joshua Park, joshuaparkwm@gmail.com
+Joshua Park, wmpark@knowre.com 
 
 ## License
 
