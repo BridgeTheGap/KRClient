@@ -72,7 +72,7 @@ open class KRClient: NSObject {
     
     // MARK: - URL Request
     
-    open func getURLRequest(for identifier: String = kDEFAULT_API_ID, api: API, parameters: [String: Any]? = nil) throws -> URLRequest {
+    open func getURLRequest(withID identifier: String = kDEFAULT_API_ID, for api: API, parameters: [String: Any]? = nil) throws -> URLRequest {
         guard let strHost = hosts[identifier] else {
             let message = identifier == kDEFAULT_API_ID ?
                 "<KRClient> There is no default host set." :
@@ -131,10 +131,10 @@ open class KRClient: NSObject {
         return request
     }
     
-    open func makeHTTPRequest(method: HTTPMethod, urlString: String, parameters: [String: Any]? = nil, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
+    open func make(httpRequest method: HTTPMethod, urlString: String, parameters: [String: Any]? = nil, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
         do {
             let request = try getURLRequest(method: method, urlString: urlString)
-            makeHTTPRequest(request, successHandler: successHandler, failureHandler: failureHandler)
+            make(httpRequest: request, successHandler: successHandler, failureHandler: failureHandler)
         } catch let error {
             if let errorStruct = error as? ErrorKind {
                 print(getError(from: errorStruct))
@@ -144,10 +144,10 @@ open class KRClient: NSObject {
         }
     }
     
-    open func makeHTTPRequest(for apiIdentifier: String, requestAPI: API, parameters: [String: Any]? = nil, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
+    open func make(httpRequestFor apiIdentifier: String, requestAPI: API, parameters: [String: Any]? = nil, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
         do {
-            let request = try getURLRequest(for: apiIdentifier, api: requestAPI)
-            makeHTTPRequest(request, successHandler: successHandler, failureHandler: failureHandler)
+            let request = try getURLRequest(withID: apiIdentifier, for: requestAPI)
+            make(httpRequest: request, successHandler: successHandler, failureHandler: failureHandler)
         } catch let error {
             if let errorStruct = error as? ErrorKind {
                 print(getError(from: errorStruct))
@@ -157,10 +157,12 @@ open class KRClient: NSObject {
         }
     }
     
-    open func makeHTTPRequest(_ urlRequest: URLRequest, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
+    open func make(httpRequest urlRequest: URLRequest, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
         do {
-            let request = try Request(urlRequest: urlRequest, responseTest: nil)
-            makeHTTPRequest(request, successHandler: successHandler, failureHandler: failureHandler)
+            var request = try Request(urlRequest: urlRequest)
+            (request.successHandler, request.failureHandler) = (successHandler, failureHandler)
+                
+            make(httpRequest: request)
         } catch let error {
             if let errorStruct = error as? ErrorKind {
                 print(getError(from: errorStruct))
@@ -169,8 +171,8 @@ open class KRClient: NSObject {
             }
         }
     }
-
-    open func makeHTTPRequest(_ request: Request, successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {
+    
+    open func make(httpRequest request: Request) {
         session.dataTask(with: request.urlRequest, completionHandler: { (optData, optResponse, optError) in
             do {
                 guard let data = optData else { throw optError! }
@@ -183,11 +185,14 @@ open class KRClient: NSObject {
                         print("<KRClient> Original request (\(request.urlRequest) failed. Attempting to recover.")
                         recoveryAction(); return
                     } else {
-                        throw getError(from: ErrorKind.dataFailedToPassValidation(description: validation.description, failureReason: validation.failureReason))
+                        throw getError(from: ErrorKind.dataFailedToPassValidation(description: validation.description,
+                                                                                  failureReason: validation.failureReason))
                     }
                 }
                 
-                switch successHandler {
+                guard let successHandler = request.successHandler else { return }
+                
+                switch request.successHandler! {
                     
                 case .data(let handler):
                     DispatchQueue.main.async { handler(data, optResponse!) }
@@ -213,6 +218,7 @@ open class KRClient: NSObject {
                     DispatchQueue.main.async { handler(string, optResponse!) }
                 }
             } catch let error {
+                guard let failureHandler = request.failureHandler else { return }
                 guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
                 DispatchQueue.main.async { handler(error as NSError, optResponse) }
             }
