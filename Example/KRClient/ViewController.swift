@@ -46,17 +46,31 @@ class ViewController: UIViewController {
             ])
 
         let req = Request.AppVersion
-            .responseTest({ (_, response) -> Bool in
-                print(response.statusCode)
-                return response.statusCode == 200
+            .responseTest({ (_, _) -> ResponseValidation in
+                print("TESTING")
+                return ResponseValidation(predicate: false, recoveryAction: self.altFunction)
             })
             .json(self.someFunction)
+            .failure({ (_, response) in
+                print("FAILED \(response)")
+            })
+            .handle(on: DispatchQueue.global(qos: .default))
         
         KRClient.shared.make(httpRequest: req)
     }
     
     func someFunction(json: [String: Any]) {
+        print("Calling `\(#function)`")
         print(json)
+    }
+    
+    func altFunction() {
+        print("Calling `\(#function)`")
+        KRClient.shared.make(httpRequest:
+            Request.AppVersion
+                .json(self.someFunction)
+                .handle(on: DispatchQueue.global(qos: .background))
+        )
     }
 
     override func didReceiveMemoryWarning() {

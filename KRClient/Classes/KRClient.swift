@@ -38,6 +38,11 @@ open class KRClient: NSObject {
     
     public init(sessionConfig: URLSessionConfiguration? = nil, delegateQueue: OperationQueue? = nil) {
         let sessionConfig = sessionConfig ?? URLSessionConfiguration.default
+        let delegateQueue = delegateQueue ?? {
+            let queue = OperationQueue()
+            queue.qualityOfService = .userInitiated
+            return queue
+        }()
         session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: delegateQueue)
     }
     
@@ -172,61 +177,61 @@ open class KRClient: NSObject {
         }
     }
     
-    open func make(httpRequest request: ImmutableRequest) {
-        make(httpRequest: request as! Request)
-    }
-    
     open func make(httpRequest request: Request) {
-        session.dataTask(with: request.urlRequest, completionHandler: { (optData, optResponse, optError) in
-            do {
-                guard let data = optData else { throw optError! }
-                
-                let response = optResponse as! HTTPURLResponse
-                let validation = request.responseTest?(data, response) ?? ResponseValidation(predicate: true)
-                
-                guard validation.didSucceed else {
-                    if let recoveryAction = validation.recoveryAction {
-                        print("<KRClient> Original request (\(request.urlRequest) failed. Attempting to recover.")
-                        recoveryAction(); return
-                    } else {
-                        throw getError(from: ErrorKind.dataFailedToPassValidation(description: validation.description,
-                                                                                  failureReason: validation.failureReason))
-                    }
-                }
-                
-                guard let successHandler = request.successHandler else { return }
-                
-                switch request.successHandler! {
+        let delegateQueue = request.queue ?? DispatchQueue.main
+        
+        self.session.dataTask(with: request.urlRequest, completionHandler: { (optData, optResponse, optError) in
+            delegateQueue.async {
+                do {
+                    guard let data = optData else { throw optError! }
                     
-                case .data(let handler):
-                    DispatchQueue.main.async { handler(data, optResponse!) }
+                    let response = optResponse as! HTTPURLResponse
+                    let validation = request.responseTest?(data, response) ?? ResponseValidation(predicate: true)
                     
-                case .json(let handler):
-                    let json = try JSONDictionary(data)
-                    DispatchQueue.main.async { handler(json, optResponse!) }
-                    
-                case .string(let handler):
-                    let encoding: UInt = {
-                        if let encodingName = response.textEncodingName {
-                            let cfEncoding = CFStringConvertIANACharSetNameToEncoding(encodingName as CFString!)
-                            return CFStringConvertEncodingToNSStringEncoding(cfEncoding)
+                    guard validation.didSucceed else {
+                        if let recoveryAction = validation.recoveryAction {
+                            print("<KRClient> The original request (\(request.urlRequest)) failed. Attempting to recover.")
+                            recoveryAction(); return
                         } else {
-                            return String.Encoding.isoLatin1.rawValue
+                            throw getError(from: ErrorKind.dataFailedToPassValidation(description: validation.description,
+                                                                                      failureReason: validation.failureReason))
                         }
-                    }()
-                    
-                    guard let string = String(data: data, encoding: String.Encoding(rawValue: encoding)) else {
-                        throw getError(from: ErrorKind.dataFailedToConvertToString)
                     }
                     
-                    DispatchQueue.main.async { handler(string, optResponse!) }
+                    guard let successHandler = request.successHandler else { return }
+                    
+                    switch request.successHandler! {
+                        
+                    case .data(let handler):
+                        handler(data, optResponse!)
+                        
+                    case .json(let handler):
+                        let json = try JSONDictionary(data)
+                        handler(json, optResponse!)
+                        
+                    case .string(let handler):
+                        let encoding: UInt = {
+                            if let encodingName = response.textEncodingName {
+                                let cfEncoding = CFStringConvertIANACharSetNameToEncoding(encodingName as CFString!)
+                                return CFStringConvertEncodingToNSStringEncoding(cfEncoding)
+                            } else {
+                                return String.Encoding.isoLatin1.rawValue
+                            }
+                        }()
+                        
+                        guard let string = String(data: data, encoding: String.Encoding(rawValue: encoding)) else {
+                            throw getError(from: ErrorKind.dataFailedToConvertToString)
+                        }
+                        
+                        handler(string, optResponse!)
+                    }
+                } catch let error {
+                    guard let failureHandler = request.failureHandler else { return }
+                    guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
+                    handler(error as NSError, optResponse)
                 }
-            } catch let error {
-                guard let failureHandler = request.failureHandler else { return }
-                guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
-                DispatchQueue.main.async { handler(error as NSError, optResponse) }
             }
-        }) .resume()
+        }).resume()
     }
     
     open func serialize(HTTPRequests requests: RequestType..., successHandler: KRClientSuccessHandler, failureHandler: KRClientFailureHandler) {

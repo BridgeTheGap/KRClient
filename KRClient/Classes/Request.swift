@@ -11,6 +11,7 @@ import UIKit
 public typealias URLResponseTest = (_ data: Data, _ response: HTTPURLResponse) -> ResponseValidation
 
 public struct ResponseValidation {
+    
     public let didSucceed: Bool
     public var recoveryAction: (() -> Void)?
     public var description: String?
@@ -31,37 +32,18 @@ public struct ResponseValidation {
         copy.failureReason = failureReason
         return copy
     }
+    
 }
 
 public protocol RequestType {}
 
-public protocol ImmutableRequest {
-    var urlRequest: URLRequest { get }
-    var responseTest: URLResponseTest? { get }
-    var successHandler: KRClientSuccessHandler? { get }
-    var failureHandler: KRClientFailureHandler? { get }
-}
-
-public protocol CompletionModifiable: ImmutableRequest {
-    func data(_ completion: @escaping (Data, URLResponse) -> Void) -> ImmutableRequest
-    func data(_ function: @escaping (Data) -> Void) -> ImmutableRequest
-    func json(_ completion: @escaping ([String: Any], URLResponse) -> Void) -> ImmutableRequest
-    func json(_ function: @escaping (([String: Any]) -> Void)) -> ImmutableRequest
-    func string(_ completion: @escaping (String, URLResponse) -> Void) -> ImmutableRequest
-    func string(_ function: @escaping (String) -> Void) -> ImmutableRequest
-}
-
-public protocol ResponseTestable: CompletionModifiable {
-    func responseTest(_ responseTest: @escaping URLResponseTest) -> ResponseTestable
-    func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Bool) -> ResponseTestable
-}
-
-public struct Request: ResponseTestable {
+public struct Request {
     
     public let urlRequest: URLRequest
     public var responseTest: URLResponseTest?
     public var successHandler: KRClientSuccessHandler?
     public var failureHandler: KRClientFailureHandler?
+    public var queue: DispatchQueue?
     
     public init(urlRequest: URLRequest) {
         self.urlRequest = urlRequest
@@ -82,52 +64,62 @@ public struct Request: ResponseTestable {
         self.urlRequest = urlRequest
     }
     
-    public func responseTest(_ responseTest: @escaping URLResponseTest) -> ResponseTestable {
+    public func responseTest(_ responseTest: @escaping URLResponseTest) -> Request {
         var req = Request(urlRequest: urlRequest)
         req.responseTest = responseTest
         return req
     }
     
-    public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Bool) -> ResponseTestable {
+    public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Bool) -> Request {
         var req = Request(urlRequest: urlRequest)
         req.responseTest = { ResponseValidation(predicate: responseTest($0, $1 as! HTTPURLResponse),
                                                 recoveryAction: nil) }
         return req
     }
     
-    public func data(_ completion: @escaping (Data, URLResponse) -> Void) -> ImmutableRequest {
+    public func data(_ function: @escaping (Data) -> Void) -> Request {
+        return data { (data, _) in function(data) }
+    }
+    
+    public func data(_ completion: @escaping (Data, URLResponse) -> Void) -> Request {
         var req = self
         req.successHandler = KRClientSuccessHandler.data(completion)
         return req
     }
     
-    public func data(_ function: @escaping (Data) -> Void) -> ImmutableRequest {
-        var req = self
-        req.successHandler = KRClientSuccessHandler.data { (data, _) in function(data) }
-        return req
+    public func json(_ function: @escaping (([String: Any]) -> Void)) -> Request {
+        return json { (json, _) in function(json) }
     }
     
-    public func json(_ completion: @escaping ([String: Any], URLResponse) -> Void) -> ImmutableRequest {
+    public func json(_ completion: @escaping ([String: Any], URLResponse) -> Void) -> Request {
         var req = self
         req.successHandler = KRClientSuccessHandler.json(completion)
         return req
     }
     
-    public func json(_ function: @escaping (([String: Any]) -> Void)) -> ImmutableRequest {
-        var req = self
-        req.successHandler = KRClientSuccessHandler.json { (json, _) in function(json) }
-        return req
+    public func string(_ function: @escaping (String) -> Void) -> Request {
+        return string { (string, _) in function(string) }
     }
-    
-    public func string(_ completion: @escaping (String, URLResponse) -> Void) -> ImmutableRequest {
+
+    public func string(_ completion: @escaping (String, URLResponse) -> Void) -> Request {
         var req = self
         req.successHandler = KRClientSuccessHandler.string(completion)
         return req
     }
     
-    public func string(_ function: @escaping (String) -> Void) -> ImmutableRequest {
+    public func failure(_ function: @escaping (NSError) -> Void) -> Request {
+        return failure { (error, _) in function(error) }
+    }
+    
+    public func failure(_ completion: @escaping (NSError, URLResponse?) -> Void) -> Request {
         var req = self
-        req.successHandler = KRClientSuccessHandler.string { (string, _) in function(string) }
+        req.failureHandler = KRClientFailureHandler.failure(completion)
+        return req
+    }
+    
+    public func handle(on queue: DispatchQueue) -> Request {
+        var req = self
+        req.queue = queue
         return req
     }
     
