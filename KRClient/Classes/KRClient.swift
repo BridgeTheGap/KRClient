@@ -172,6 +172,10 @@ open class KRClient: NSObject {
         }
     }
     
+    open func make(httpRequest request: ImmutableRequest) {
+        make(httpRequest: request as! Request)
+    }
+    
     open func make(httpRequest request: Request) {
         session.dataTask(with: request.urlRequest, completionHandler: { (optData, optResponse, optError) in
             do {
