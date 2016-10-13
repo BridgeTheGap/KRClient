@@ -13,12 +13,12 @@ public typealias URLResponseTest = (_ data: Data, _ response: HTTPURLResponse) -
 public struct ResponseValidation {
     
     public let didSucceed: Bool
-    public var recoveryAction: (() -> Void)?
+    public var alternative: Request?
     public var description: String?
     public var failureReason: String?
     
-    public init(predicate: Bool, recoveryAction: (() -> Void)? = nil) {
-        (self.didSucceed, self.recoveryAction) = (predicate, recoveryAction)
+    public init(predicate: Bool, alternative: Request? = nil) {
+        (self.didSucceed, self.alternative) = (predicate, alternative)
     }
     
     public func description(_ description: String) -> ResponseValidation {
@@ -35,9 +35,9 @@ public struct ResponseValidation {
     
 }
 
-public protocol RequestType {}
+public protocol RequestType { }
 
-public struct Request {
+public struct Request: RequestType {
     
     public let urlRequest: URLRequest
     public var responseTest: URLResponseTest?
@@ -72,8 +72,8 @@ public struct Request {
     
     public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Bool) -> Request {
         var req = Request(urlRequest: urlRequest)
-        req.responseTest = { ResponseValidation(predicate: responseTest($0, $1 as! HTTPURLResponse),
-                                                recoveryAction: nil) }
+        req.responseTest = { ResponseValidation(predicate: responseTest($0, $1 as HTTPURLResponse),
+                                                alternative: nil) }
         return req
     }
     
@@ -125,10 +125,10 @@ public struct Request {
     
 }
 
-struct BatchRequest: RequestType {
-    let requests: [Request]
+public struct BatchRequest: RequestType {
+    public let requests: [Request]
     
-    init(requests: [Request]) {
+    public init(requests: [Request]) {
         self.requests = requests
     }
 }

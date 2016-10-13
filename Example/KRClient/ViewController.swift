@@ -38,25 +38,69 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        KRClient.shared.set(defaultHost: "dev-sylvan.knowreapp.com")
-        KRClient.shared.set(defaultHeaderFields: [
-            "User-Agent": "iPad",
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            ])
-
-        let req = Request.AppVersion
-            .responseTest({ (_, _) -> ResponseValidation in
-                print("TESTING")
-                return ResponseValidation(predicate: false, recoveryAction: self.altFunction)
-            })
-            .json(self.someFunction)
-            .failure({ (_, response) in
-                print("FAILED \(response)")
-            })
-            .handle(on: DispatchQueue.global(qos: .default))
+//        KRClient.shared.set(defaultHost: "dev-sylvan.knowreapp.com")
+//        KRClient.shared.set(defaultHeaderFields: [
+//            "User-Agent": "iPad",
+//            "Accept": "application/json",
+//            "Content-Type": "application/json",
+//            ])
+//
+//        let req = Request.AppVersion
+//            .responseTest({ (_, _) -> ResponseValidation in
+//                print("TESTING")
+//                return ResponseValidation(predicate: false, recoveryAction: self.altFunction)
+//            })
+//            .json(self.someFunction)
+//            .failure({ (_, response) in
+//                print("FAILED \(response)")
+//            })
+//        
+//        KRClient.shared.make(httpRequest: req)
         
-        KRClient.shared.make(httpRequest: req)
+        KRClient.shared.set(identifier: "website", host: "play-1194.appspot.com/")
+        
+        let req1 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": 1])
+            .string({ (_, response) in
+                print(response.url)
+            })
+            .failure({ (err, response) in
+                print(err, response)
+            })
+        let req2 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": 2])
+            .string({ (_, response) in
+                print(response.url)
+            })
+            .failure({ (err, response) in
+                print(err, response)
+            })
+        let req3 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": 3])
+            .responseTest({ (_, response) -> ResponseValidation in
+                let req5 = try! Request(withID: "website",
+                                        for: API(method: .GET, path: "notes"),
+                                        parameters: ["lesson": "4_1"])
+                    .string({ (_, response) in
+                        print(response.url)
+                    })
+                return ResponseValidation(predicate: response.statusCode == 200, alternative: req5)
+            })
+            .string({ (_, response) in
+                print(response.url)
+            })
+            .failure({ (err, response) in
+                print(err, response)
+            })
+        let req4 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": "4_2"])
+            .responseTest({ (_, response) -> Bool in
+                return response.statusCode == 200
+            })
+            .string({ (_, response) in
+                print(response.url)
+            })
+            .failure({ (err, response) in
+                print(err, response)
+            })
+        
+        KRClient.shared.make(groupedHttpRequests: req1, req2, req3, req4, mode: .recover)
     }
     
     func someFunction(json: [String: Any]) {
@@ -78,5 +122,8 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func buttonAction(_ sender: AnyObject) {
+        print("PRESSED")
+    }
 }
 
