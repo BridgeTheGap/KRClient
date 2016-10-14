@@ -125,26 +125,24 @@ public struct Request: RequestType {
     
 }
 
-public struct BatchRequest: RequestType {
-    public let requests: [Request]
-    
-    public init(requests: [Request]) {
-        self.requests = requests
-    }
+// MARK: - Batch Request
+
+extension Array: RequestType { }
+
+public typealias BatchRequest = Array<Request>
+
+public func +(lhs: Request, rhs: Request) -> BatchRequest {
+    return [lhs, rhs]
 }
 
-func +(lhs: Request, rhs: Request) -> BatchRequest {
-    return BatchRequest(requests: [lhs, rhs])
+public func +(lhs: Request, rhs: BatchRequest) -> BatchRequest {
+    return [lhs] + rhs
 }
 
-func +(lhs: Request, rhs: BatchRequest) -> BatchRequest {
-    return BatchRequest(requests: [lhs] + rhs.requests)
+public func +(lhs: BatchRequest, rhs: Request) -> BatchRequest {
+    return lhs + [rhs]
 }
 
-func +(lhs: BatchRequest, rhs: Request) -> BatchRequest {
-    return BatchRequest(requests: lhs.requests + [rhs])
-}
-
-func +(lhs: BatchRequest, rhs: BatchRequest) -> BatchRequest {
-    return BatchRequest(requests: lhs.requests + rhs.requests)
+public func +(lhs: BatchRequest, rhs: BatchRequest) -> BatchRequest {
+    return lhs + rhs
 }

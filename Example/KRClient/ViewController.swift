@@ -45,10 +45,12 @@ class ViewController: UIViewController {
 //            "Content-Type": "application/json",
 //            ])
 //
-//        let req = Request.AppVersion
+//        let req = try! Request(method: .GET, urlString: "http://www.naver.com")
 //            .responseTest({ (_, _) -> ResponseValidation in
 //                print("TESTING")
-//                return ResponseValidation(predicate: false, recoveryAction: self.altFunction)
+//                let alt = Request.AppVersion
+//                    .json(self.someFunction)
+//                return ResponseValidation(predicate: false, alternative: alt)
 //            })
 //            .json(self.someFunction)
 //            .failure({ (_, response) in
@@ -100,7 +102,7 @@ class ViewController: UIViewController {
                 print(err, response)
             })
         
-        KRClient.shared.make(groupHTTPRequests: req1, req2, req3, req4, mode: .recover)
+        KRClient.shared.make(groupHTTPRequests: req1, req2 + req3, req4, mode: .recover)
     }
     
     func someFunction(json: [String: Any]) {
