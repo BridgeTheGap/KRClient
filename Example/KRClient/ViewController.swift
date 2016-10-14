@@ -100,7 +100,7 @@ class ViewController: UIViewController {
                 print(err, response)
             })
         
-        KRClient.shared.make(groupedHttpRequests: req1, req2, req3, req4, mode: .recover)
+        KRClient.shared.make(groupHTTPRequests: req1, req2, req3, req4, mode: .recover)
     }
     
     func someFunction(json: [String: Any]) {

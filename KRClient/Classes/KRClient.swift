@@ -260,11 +260,11 @@ open class KRClient: NSObject {
     
     // MARK: - Grouped Requests
     
-    open func make(groupedHttpRequests groupRequest: Request..., mode: GroupRequestMode = .abort) {
-        make(groupedHttpRequests: groupRequest, mode: mode)
+    open func make(groupHTTPRequests groupRequest: Request..., mode: GroupRequestMode = .abort) {
+        make(groupHTTPRequests: groupRequest, mode: mode)
     }
     
-    private func make(groupedHttpRequests groupRequest: [Request], mode: GroupRequestMode) {
+    private func make(groupHTTPRequests groupRequest: [Request], mode: GroupRequestMode) {
         var groupRequest = groupRequest
         var abort = false
         let queue = DispatchQueue.global(qos: .utility)
@@ -278,27 +278,27 @@ open class KRClient: NSObject {
             
             reqIter: repeat {
                 let req = groupRequest.removeFirst()
+                
                 self.make(httpRequest: req, groupRequestHandler: handler)
                 
                 group.wait()
                 
-                mode: switch mode {
-                case .abort:
-                    guard !abort else {
+                guard !abort else {
+                    mode: switch mode {
+                    case .abort:
                         print("<KRClient> Aborting group requests due to failure.")
                         break reqIter
-                    }
-                case .recover:
-                    guard !abort else {
+                    case .ignore:
+                        abort = false
+                        continue reqIter
+                    case .recover:
                         if let recover = handler.alternative {
-                            self.make(groupedHttpRequests: [recover] + groupRequest, mode: mode)
+                            self.make(groupHTTPRequests: [recover] + groupRequest, mode: mode)
                         } else {
                             print("<KRClient> Aborting group requests due to failure.")
                         }
                         break reqIter
                     }
-                default:
-                    break mode
                 }
 
             } while groupRequest.count > 0
