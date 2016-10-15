@@ -23,75 +23,60 @@ extension API {
     }
 }
 
+// Recommended use
+
 extension Request {
-    static var AppVersion: Request {
-        let api = API(method: .GET, path: "/api/common/v1.0/getAppVersionInfo")
-        let params: [String: Any] = ["input": try! JSONString(["type": "product"])!]
-        let req = try! Request(for: api, parameters: params)
-        
+    static var Lesson1: Request {
+        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": 1])
+            .apply(templateWithID: nil)
+        return req
+    }
+    
+    static var Lesson2: Request {
+        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": 2])
+            .apply(templateWithID: nil)
+        return req
+    }
+    
+    static var Lesson3: Request {
+        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": 3])
+            .apply(templateWithID: nil)
+        return req
+    }
+    
+    static var Lesson4_1: Request {
+        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": "4_1"])
+            .apply(templateWithID: nil)
+        return req
+    }
+    
+    static var Lesson4_2: Request {
+        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": "4_2"])
+            .apply(templateWithID: nil)
         return req
     }
 }
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
+    @IBOutlet weak var label1: UILabel!
+    @IBOutlet weak var label2: UILabel!
+    @IBOutlet weak var label3: UILabel!
+    @IBOutlet weak var label4: UILabel!
+    @IBOutlet weak var label5: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        KRClient.shared.set(defaultHost: "dev-sylvan.knowreapp.com")
-//        KRClient.shared.set(defaultHeaderFields: [
-//            "User-Agent": "iPad",
-//            "Accept": "application/json",
-//            "Content-Type": "application/json",
-//            ])
-//
-//        let req = try! Request(method: .GET, urlString: "http://www.naver.com")
-//            .responseTest({ (_, _) -> ResponseValidation in
-//                print("TESTING")
-//                let alt = Request.AppVersion
-//                    .json(self.someFunction)
-//                return ResponseValidation(predicate: false, alternative: alt)
-//            })
-//            .json(self.someFunction)
-//            .failure({ (_, response) in
-//                print("FAILED \(response)")
-//            })
-//        
-//        KRClient.shared.make(httpRequest: req)
-        
-        KRClient.shared.set(identifier: "website", host: "play-1194.appspot.com/")
-        
-        let req1 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": 1])
-            .string({ (_, response) in
-                print(response.url)
-            })
-            .failure({ (err, response) in
-                print(err, response)
-            })
-        let req2 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": 2])
-            .string({ (_, response) in
-                print(response.url)
-            })
-            .failure({ (err, response) in
-                print(err, response)
-            })
-        let req3 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": 3])
-            .responseTest({ (_, response) -> ResponseValidation in
-                let req5 = try! Request(withID: "website",
-                                        for: API(method: .GET, path: "notes"),
-                                        parameters: ["lesson": "4_1"])
-                    .string({ (_, response) in
-                        print(response.url)
-                    })
-                return ResponseValidation(predicate: response.statusCode == 200, alternative: req5)
-            })
-            .string({ (_, response) in
-                print(response.url)
-            })
-            .failure({ (err, response) in
-                print(err, response)
-            })
-        let req4 = try! Request(withID: "website", for: API(method: .GET, path: "notes"), parameters: ["lesson": "4_2"])
+        KRClient.shared.set(defaultHost: "play-1194.appspot.com")
+        KRClient.shared.set(defaultHeaderFields: [
+            "Accept": "text/html",
+            "Content-Type": "text/html",
+            ])
+
+        let template = RequestTemplate()
             .responseTest({ (_, response) -> Bool in
                 return response.statusCode == 200
             })
@@ -101,31 +86,81 @@ class ViewController: UIViewController {
             .failure({ (err, response) in
                 print(err, response)
             })
-        
-        KRClient.shared.make(groupHTTPRequests: req1, req2 + req3, req4, mode: .recover)
+        KRClient.shared.set(defaultTemplate: template)
     }
     
-    func someFunction(json: [String: Any]) {
-        print("Calling `\(#function)`")
-        print(json)
-    }
-    
-    func altFunction() {
-        print("Calling `\(#function)`")
-        KRClient.shared.make(httpRequest:
-            Request.AppVersion
-                .json(self.someFunction)
-                .handle(on: DispatchQueue.global(qos: .background))
-        )
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func resetAllLabels() {
+        for label in [label1, label2, label3, label4, label5] {
+            label!.textColor = UIColor.lightGray
+            label!.text = "Waiting.."
+        }
+    }
+    
+    func setLabel(for labelID: Int, didFail: Bool = false) {
+        let label: UILabel = {
+            switch labelID {
+            case 1: return label1
+            case 2: return label2
+            case 3: return label3
+            case 4: return label4
+            default: return label5
+            }
+        }()
+        
+        let order: Int = {
+            var count = 1
+            for label in [label1, label2, label3, label4, label5] {
+                if label!.text!.contains("Finished") { count += 1 }
+            }
+            return count
+        }()
+        
+        label.textColor = didFail ? UIColor.red : UIColor.green
+        label.text = didFail ? "Failed" : "Finished \(order)"
+    }
 
     @IBAction func buttonAction(_ sender: AnyObject) {
-        print("PRESSED")
+        resetAllLabels()
+        
+        // Change groups to your taste
+        // To make batch requests, pass a `[Request]` type or use the `&` operator
+        let idx = segmentedControl.selectedSegmentIndex
+        let mode: GroupRequestMode = idx == 0 ? .abort : idx == 1 ? .ignore : .recover
+        
+        let req1 = Request.Lesson1.data { (_, _) in
+            self.setLabel(for: 1)
+        }
+        let req2 = Request.Lesson2.data { (_, _) in
+            self.setLabel(for: 2)
+        }
+        var req3 = Request.Lesson3
+            .string ({ (_, _) in
+                self.setLabel(for: 3)
+            })
+            .failure({ (_, _) in
+                self.setLabel(for: 3, didFail: true)
+            })
+        
+        if mode == .recover {
+            req3 = req3.responseTest({ (_, response) -> ResponseValidation in
+                let req5 = Request.Lesson4_2.data({ (_, _) in
+                    self.setLabel(for: 5)
+                })
+                return ResponseValidation(predicate: response.statusCode == 200,
+                                          alternative: req5)
+            })
+        }
+        
+        let req4 = Request.Lesson4_1.data { (_, _) in
+            self.setLabel(for: 4)
+        }
+        
+        KRClient.shared.make(groupHTTPRequests: req1 & req2, req3, req4, mode: mode)
     }
 }
 

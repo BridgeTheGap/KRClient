@@ -54,6 +54,8 @@ open class KRClient: NSObject {
     open private(set) var hosts = [String: String]()
     open private(set) var headerFields = [String: [String: String]] ()
     open var timeoutInterval: Double = 20.0
+    
+    open private(set) var templates = [String: RequestTemplate]()
 
     // MARK: - Initializer
     
@@ -89,6 +91,14 @@ open class KRClient: NSObject {
     
     open func set(identifier: String, headerFields: [String: String]) {
         self.headerFields[identifier] = headerFields
+    }
+    
+    open func set(defaultTemplate: RequestTemplate) {
+        self.templates[kDEFAULT_API_ID] = defaultTemplate
+    }
+    
+    open func set(identifier: String, template: RequestTemplate) {
+        self.templates[identifier] = template
     }
     
     private func getQueryString(from parameters: [String: Any]) -> String {
