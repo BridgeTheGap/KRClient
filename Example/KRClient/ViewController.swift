@@ -57,8 +57,19 @@ extension Request {
     }
 }
 
-class ViewController: UIViewController {
+fileprivate extension UIColor {
+    convenience init(hexColor: Int) {
+        let (r, g, b) = ((hexColor & 0xFF0000) >> 16, (hexColor & 0xFF00) >> 8, hexColor & 0xFF)
+        self.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1.0)
+    }
+    
+    static var green: UIColor {
+        return UIColor(hexColor: 0x4BD365)
+    }
+}
 
+class ViewController: UIViewController {
+    
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     @IBOutlet weak var label1: UILabel!
@@ -66,6 +77,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var label3: UILabel!
     @IBOutlet weak var label4: UILabel!
     @IBOutlet weak var label5: UILabel!
+    
+    @IBOutlet weak var statusLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,6 +112,8 @@ class ViewController: UIViewController {
             label!.textColor = UIColor.lightGray
             label!.text = "Waiting.."
         }
+        
+        statusLabel.isHidden = true
     }
     
     func setLabel(for labelID: Int, didFail: Bool = false) {
@@ -124,8 +139,9 @@ class ViewController: UIViewController {
         label.text = didFail ? "Failed" : "Finished \(order)"
     }
 
-    @IBAction func buttonAction(_ sender: AnyObject) {
+    @IBAction func buttonAction(_ sender: UIButton) {
         resetAllLabels()
+        sender.isEnabled = false
         
         // Change groups to your taste
         // To make batch requests, pass a `[Request]` type or use the `&` operator
@@ -160,7 +176,13 @@ class ViewController: UIViewController {
             self.setLabel(for: 4)
         }
         
-        KRClient.shared.make(groupHTTPRequests: req1 & req2, req3, req4, mode: mode)
+        KRClient.shared.make(groupHTTPRequests: req1 & req2, req3, req4, mode: mode, completion: { (finished) in
+            sender.isEnabled = true
+            
+            self.statusLabel.isHidden = false
+            self.statusLabel.textColor = finished ? UIColor.green : UIColor.red
+            self.statusLabel.text = finished ? "All requests were finished." : "Group request was aborted."
+        })
     }
 }
 

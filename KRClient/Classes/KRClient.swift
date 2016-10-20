@@ -22,17 +22,18 @@ public enum KRClientFailureHandler {
     
 }
 
-let kDEFAULT_API_ID = "com.KRClient.APIManager.defaultID"
+let kDEFAULT_API_ID = "com.KRClient.defaultID"
 
-private class GroupRequestHandler {
+fileprivate class GroupRequestHandler {
     
     let mode: GroupRequestMode
     var success: (() -> Void)!
     var failure: (() -> Void)!
     var alternative: Request?
+    var completion: ((Bool) -> Void)?
     
-    init(mode: GroupRequestMode) {
-        self.mode = mode
+    init(mode: GroupRequestMode, completion: ((Bool) -> Void)?) {
+        (self.mode, self.completion) = (mode, completion)
     }
     
 }
@@ -276,11 +277,11 @@ open class KRClient: NSObject {
     
     // MARK: - Grouped Requests
     
-    open func make(groupHTTPRequests groupRequest: RequestType..., mode: GroupRequestMode = .abort) {
-        dispatch(groupHTTPRequests: groupRequest, mode: mode)
+    open func make(groupHTTPRequests groupRequest: RequestType..., mode: GroupRequestMode = .abort, completion: ((Bool) -> Void)? = nil) {
+        dispatch(groupHTTPRequests: groupRequest, mode: mode, completion: completion)
     }
     
-    private func dispatch(groupHTTPRequests groupRequest: [RequestType], mode: GroupRequestMode) {
+    private func dispatch(groupHTTPRequests groupRequest: [RequestType], mode: GroupRequestMode, completion: ((Bool) -> Void)?) {
         var groupRequest = groupRequest
         var abort = false
         let queue = DispatchQueue.global(qos: .utility)
@@ -288,7 +289,8 @@ open class KRClient: NSObject {
         queue.async {
             let sema = DispatchSemaphore(value: 0)
             
-            let handler = GroupRequestHandler(mode: mode)
+            let handler = GroupRequestHandler(mode: mode, completion: completion)
+            var completionQueue: DispatchQueue?
             
             reqIter: repeat {
                 let req = groupRequest.removeFirst()
@@ -298,6 +300,8 @@ open class KRClient: NSObject {
                     handler.failure = { abort = true; sema.signal() }
                     
                     self.make(httpRequest: req as! Request, groupRequestHandler: handler)
+                    
+                    completionQueue = (req as! Request).queue ?? DispatchQueue.main
                 } else {
                     let reqArr = req as! [Request]
                     
@@ -310,6 +314,9 @@ open class KRClient: NSObject {
                         group.enter()
                         self.make(httpRequest: r, groupRequestHandler: handler)
                     }
+                    
+                    completionQueue = reqArr.last!.queue ?? DispatchQueue.main
+                    
                     group.wait()
                     sema.signal()
                 }
@@ -327,15 +334,19 @@ open class KRClient: NSObject {
                     case .recover:
                         if let recover = handler.alternative {
                             print("<KRClient> Attempting to recover from failure (\(recover.urlRequest)).")
-                            self.dispatch(groupHTTPRequests: [recover as RequestType] + groupRequest, mode: mode)
+                            completionQueue = nil
+                            self.dispatch(groupHTTPRequests: [recover as RequestType] + groupRequest, mode: mode, completion: completion)
                         } else {
                             print("<KRClient> Aborting group requests due to failure.")
                         }
                         break reqIter
                     }
                 }
-
             } while groupRequest.count > 0
+
+            completionQueue?.async {
+                handler.completion?(groupRequest.isEmpty)
+            }
         }
     }
     
