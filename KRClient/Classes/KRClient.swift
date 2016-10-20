@@ -217,20 +217,29 @@ open class KRClient: NSObject {
                     let validation = request.responseTest?(data, response) ?? ResponseValidation(predicate: true)
                     
                     guard validation.didSucceed else {
+                        let error = ErrorKind.dataFailedToPassValidation(description: validation.description,
+                                                                         failureReason: validation.failureReason)
+                        
                         if let alternative = validation.alternative {
                             print("<KRClient> The original request (\(request.urlRequest)) failed.")
                             
                             if let handler = groupRequestHandler {
+                                if let failureHandler = request.failureHandler {
+                                    if case KRClientFailureHandler.failure(let handler) = failureHandler {
+                                        handler(error as NSError, optResponse)
+                                    }
+                                }
+                                
                                 handler.failure()
                                 handler.alternative = alternative
                             } else {
                                 print("<KRClient> Attempting to recover from failure (\(alternative.urlRequest)).")
                                 KRClient.shared.make(httpRequest: alternative, groupRequestHandler: nil)
                             }
+                            
                             return
                         } else {
-                            throw getError(from: ErrorKind.dataFailedToPassValidation(description: validation.description,
-                                                                                      failureReason: validation.failureReason))
+                            throw getError(from: error)
                         }
                     }
                     
