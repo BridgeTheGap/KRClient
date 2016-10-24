@@ -24,16 +24,28 @@ public enum KRClientFailureHandler {
 
 let kDEFAULT_API_ID = "com.KRClient.defaultID"
 
+public struct Position: CustomStringConvertible {
+    
+    public var index: Int
+    public var count: Int
+    
+    public var description: String {
+        return "\(index + 1) of \(count)"
+    }
+    
+}
+
 fileprivate class GroupRequestHandler {
     
     let mode: GroupRequestMode
+    var position: Position
     var success: (() -> Void)!
     var failure: (() -> Void)!
     var alternative: Request?
     var completion: ((Bool) -> Void)?
     
-    init(mode: GroupRequestMode, completion: ((Bool) -> Void)?) {
-        (self.mode, self.completion) = (mode, completion)
+    init(mode: GroupRequestMode, position: Position, completion: ((Bool) -> Void)?) {
+        (self.mode, self.position, self.completion) = (mode, position, completion)
     }
     
 }
@@ -46,17 +58,64 @@ public enum GroupRequestMode {
     
 }
 
+public protocol KRClientDelegate: class {
+    
+    func client(_ client: KRClient, willMake request: Request, at position: Position?)
+    func client(_ client: KRClient, didMake request: Request, at position: Position?)
+    func client(_ client: KRClient, willFinish request: Request, at position: Position?, withSuccess isSuccess: Bool)
+    func client(_ client: KRClient, didFinish request: Request, at position: Position?, withSuccess isSuccess: Bool)
+    
+    func client(_ client: KRClient, willBegin groupRequest: [RequestType])
+    func client(_ client: KRClient, didFinish groupRequest: [RequestType])
+    
+}
+
+public protocol NetworkIndicatorDelegate: KRClientDelegate {}
+
+public extension NetworkIndicatorDelegate {
+    public func client(_ client: KRClient, willMake request: Request, at index: Position?) {
+        if let indicatorView = client.indicatorView, index == nil {
+            UIApplication.shared.keyWindow?.addSubview(indicatorView)
+        }
+    }
+    
+    public func client(_ client: KRClient, didMake request: Request, at index: Position?) { }
+    
+    public func client(_ client: KRClient, willFinish request: Request, at index: Position?, withSuccess isSuccess: Bool) { }
+    
+    public func client(_ client: KRClient, didFinish request: Request, at index: Position?, withSuccess isSuccess: Bool) {
+        if index == nil {
+            client.indicatorView?.removeFromSuperview()
+        }
+    }
+    
+    public func client(_ client: KRClient, willBegin groupRequest: [RequestType]) {
+        if let indicatorView = client.indicatorView {
+            DispatchQueue.main.async { UIApplication.shared.keyWindow?.addSubview(indicatorView) }
+        }
+    }
+    
+    public func client(_ client: KRClient, didFinish groupRequest: [RequestType]) {
+        if let indicatorView = client.indicatorView {
+            DispatchQueue.main.async { indicatorView.removeFromSuperview() }
+        }
+    }
+}
+
 open class KRClient: NSObject {
     
     open static let shared = KRClient()
     
     open let session: URLSession
+    open weak var delegate: KRClientDelegate?
     
     open private(set) var hosts = [String: String]()
     open private(set) var headerFields = [String: [String: String]] ()
     open var timeoutInterval: Double = 20.0
     
     open private(set) var templates = [String: RequestTemplate]()
+    
+    open var indicatorView: UIView?
 
     // MARK: - Initializer
     
@@ -202,11 +261,17 @@ open class KRClient: NSObject {
     }
     
     open func make(httpRequest request: Request) {
-        make(httpRequest: request, groupRequestHandler: nil)
+        session.delegateQueue.addOperation { 
+            self.make(httpRequest: request, groupRequestHandler: nil)
+        }
     }
     
     private func make(httpRequest request: Request, groupRequestHandler: GroupRequestHandler?) {
         let delegateQueue = request.queue ?? DispatchQueue.main
+        weak var delegate = self.delegate
+        let counter = groupRequestHandler?.position
+        
+        delegateQueue.sync { delegate?.client(self, willMake: request, at: counter) }
         
         self.session.dataTask(with: request.urlRequest, completionHandler: { (optData, optResponse, optError) in
             delegateQueue.async {
@@ -243,6 +308,9 @@ open class KRClient: NSObject {
                         }
                     }
                     
+                    
+                    delegate?.client(self, willFinish: request, at: counter, withSuccess: true)
+                    
                     guard let successHandler = request.successHandler else { groupRequestHandler?.success(); return }
                     
                     switch request.successHandler! {
@@ -272,33 +340,51 @@ open class KRClient: NSObject {
                         
                     }
                     
+                    delegate?.client(self, didFinish: request, at: counter, withSuccess: true)
+                    
                     groupRequestHandler?.success()
                 } catch let error {
                     defer { groupRequestHandler?.failure() }
                     
+                    delegate?.client(self, willFinish: request, at: counter, withSuccess: false)
+                    
                     guard let failureHandler = request.failureHandler else { return }
                     guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
                     handler(error as NSError, optResponse)
+                    
+                    delegate?.client(self, didFinish: request, at: counter, withSuccess: false)
                 }
             }
         }).resume()
+        
+        delegateQueue.sync { delegate?.client(self, didMake: request, at: counter) }
     }
     
     // MARK: - Grouped Requests
     
     open func make(groupHTTPRequests groupRequest: RequestType..., mode: GroupRequestMode = .abort, completion: ((Bool) -> Void)? = nil) {
-        dispatch(groupHTTPRequests: groupRequest, mode: mode, completion: completion)
+        session.delegateQueue.addOperation {
+            self.dispatch(groupHTTPRequests: groupRequest, mode: mode, completion: completion)
+        }
     }
     
     private func dispatch(groupHTTPRequests groupRequest: [RequestType], mode: GroupRequestMode, completion: ((Bool) -> Void)?) {
+        let originalReq = groupRequest
         var groupRequest = groupRequest
         var abort = false
         let queue = DispatchQueue.global(qos: .utility)
         
+        delegate?.client(self, willBegin: originalReq)
+        
         queue.async {
             let sema = DispatchSemaphore(value: 0)
             
-            let handler = GroupRequestHandler(mode: mode, completion: completion)
+            let count = groupRequest.reduce(0) { (i, e) -> Int in
+                if e is Request { return i + 1 }
+                else { return i + (e as! [Request]).count }
+            }
+            let counter = Position(index: 0, count: count)
+            let handler = GroupRequestHandler(mode: mode, position: counter, completion: completion)
             var completionQueue: DispatchQueue?
             
             reqIter: repeat {
@@ -311,6 +397,8 @@ open class KRClient: NSObject {
                     self.make(httpRequest: req as! Request, groupRequestHandler: handler)
                     
                     completionQueue = (req as! Request).queue ?? DispatchQueue.main
+                    
+                    handler.position.index += 1
                 } else {
                     let reqArr = req as! [Request]
                     
@@ -321,7 +409,10 @@ open class KRClient: NSObject {
                     
                     for r in reqArr {
                         group.enter()
+                        
                         self.make(httpRequest: r, groupRequestHandler: handler)
+                        
+                        handler.position.index += 1
                     }
                     
                     completionQueue = reqArr.last!.queue ?? DispatchQueue.main
@@ -352,9 +443,11 @@ open class KRClient: NSObject {
                     }
                 }
             } while groupRequest.count > 0
-
-            completionQueue?.async {
-                handler.completion?(groupRequest.isEmpty)
+            
+            if let completionQueue = completionQueue {
+                completionQueue.sync { handler.completion?(groupRequest.isEmpty) }
+                
+                self.session.delegateQueue.addOperation { self.delegate?.client(self, didFinish: originalReq) }
             }
         }
     }

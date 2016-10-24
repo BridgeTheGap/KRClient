@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KRClient
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

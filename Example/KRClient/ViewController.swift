@@ -68,7 +68,9 @@ fileprivate extension UIColor {
     }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, NetworkIndicatorDelegate {
+    
+    @IBOutlet weak var indicatorView: UIView?
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -88,6 +90,7 @@ class ViewController: UIViewController {
             "Accept": "text/html",
             "Content-Type": "text/html",
             ])
+        KRClient.shared.delegate = self
 
         let template = RequestTemplate()
             .responseTest({ (_, response) -> Bool in
@@ -100,6 +103,9 @@ class ViewController: UIViewController {
                 print(err, response)
             })
         KRClient.shared.set(defaultTemplate: template)
+        
+        KRClient.shared.indicatorView = indicatorView
+        indicatorView?.removeFromSuperview()
     }
     
     override func didReceiveMemoryWarning() {
@@ -150,6 +156,8 @@ class ViewController: UIViewController {
         
         let req1 = Request.Lesson1.data { (_, _) in
             self.setLabel(for: 1)
+        }.failure { (_, _) in
+            print("IT'S RAW!")
         }
         let req2 = Request.Lesson2.data { (_, _) in
             self.setLabel(for: 2)
@@ -183,6 +191,8 @@ class ViewController: UIViewController {
             self.statusLabel.textColor = finished ? UIColor.green : UIColor.red
             self.statusLabel.text = finished ? "All requests were finished." : "Group request was aborted."
         })
+//        KRClient.shared.make(httpRequest: req1)
     }
+    
 }
 
