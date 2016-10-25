@@ -45,8 +45,7 @@ extension Request {
     }
     
     static func Lesson4_1(param: @autoclosure @escaping () -> String) -> Request {
-        // FIXME: Fix when bug is fixed
-        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": param()])
+        let req = try! Request(for: API(method: .GET, path: "notes"), autoclosure: ["lesson": param()])
             .apply(templateWithID: nil)
         return req
     }
