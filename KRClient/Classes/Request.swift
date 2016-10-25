@@ -116,6 +116,10 @@ public struct RequestTemplate {
 public struct Request: RequestType {
     
     public var urlRequest: URLRequest
+    private var parameters: (() -> [String: Any])?
+    
+    public var shouldSetParameters: Bool { return parameters != nil }
+    
     public var responseTest: URLResponseTest?
     public var successHandler: KRClientSuccessHandler?
     public var failureHandler: KRClientFailureHandler?
@@ -130,14 +134,29 @@ public struct Request: RequestType {
         self.urlRequest = urlRequest
     }
     
+    public init(for api: API, parameters: @autoclosure @escaping () -> [String: Any]) throws {
+        let urlRequest = try KRClient.shared.getURLRequest(withID: kDEFAULT_API_ID, for: api, parameters: nil)
+        (self.urlRequest, self.parameters) = (urlRequest, parameters)
+    }
+    
     public init(withID ID: String, for api: API, parameters: [String: Any]? = nil) throws {
         let urlRequest = try KRClient.shared.getURLRequest(withID: ID, for: api, parameters: parameters)
         self.urlRequest = urlRequest
     }
     
+    public init(withID ID: String, for api: API, parameters: @autoclosure @escaping () -> [String: Any]) throws {
+        let urlRequest = try KRClient.shared.getURLRequest(withID: ID, for: api, parameters: nil)
+        (self.urlRequest, self.parameters) = (urlRequest, parameters)
+    }
+    
     public init(method: HTTPMethod, urlString: String, parameters: [String: Any]? = nil) throws {
         let urlRequest = try KRClient.shared.getURLRequest(method: method, urlString: urlString, parameters: parameters)
         self.urlRequest = urlRequest
+    }
+    
+    public init(method: HTTPMethod, urlString: String, parameters: @autoclosure @escaping () -> [String: Any]) throws {
+        let urlRequest = try KRClient.shared.getURLRequest(method: method, urlString: urlString, parameters: nil)
+        (self.urlRequest, self.parameters) = (urlRequest, parameters)
     }
     
     public func responseTest(_ responseTest: @escaping URLResponseTest) -> Request {
@@ -219,6 +238,10 @@ public struct Request: RequestType {
         return req
     }
     
+    internal mutating func setParameters() {
+        urlRequest = try! KRClient.shared.getURLRequest(from: urlRequest, parameters: parameters!())
+        parameters = nil
+    }
 }
 
 // MARK: - Batch Request

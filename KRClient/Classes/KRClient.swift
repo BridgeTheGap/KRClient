@@ -168,6 +168,29 @@ open class KRClient: NSObject {
     
     // MARK: - URL Request
     
+    open func getURLRequest(from baseRequest: URLRequest, parameters: [String: Any]) throws -> URLRequest {
+        guard let urlString = baseRequest.url?.absoluteString else {
+            let message = "<KRClient> Attempt to make a `URLRequest` from an empty string."
+            throw ErrorKind.invalidOperation(description: message, file: #file, line: #line)
+        }
+        
+        switch baseRequest.httpMethod ?? "GET" {
+        case "POST":
+            guard let url = URL(string: urlString) else {
+                throw ErrorKind.failedToConvertStringToURL(string: urlString)
+            }
+            var request = URLRequest(url: url)
+            request.httpBody = try JSONData(parameters)
+            return request
+        default:
+            let strQuery = getQueryString(from: parameters)
+            guard let url = URL(string: urlString + strQuery) else {
+                throw ErrorKind.failedToConvertStringToURL(string: urlString + strQuery)
+            }
+            return URLRequest(url: url)
+        }
+    }
+    
     open func getURLRequest(withID identifier: String = kDEFAULT_API_ID, for api: API, parameters: [String: Any]? = nil) throws -> URLRequest {
         guard let strHost = hosts[identifier] else {
             let message = identifier == kDEFAULT_API_ID ?
@@ -267,6 +290,12 @@ open class KRClient: NSObject {
     }
     
     private func make(httpRequest request: Request, groupRequestHandler: GroupRequestHandler?) {
+        var request = request
+        
+        if request.shouldSetParameters {
+            request.setParameters()
+        }
+        
         let delegateQueue = request.queue ?? DispatchQueue.main
         weak var delegate = self.delegate
         let counter = groupRequestHandler?.position
@@ -445,7 +474,7 @@ open class KRClient: NSObject {
             } while groupRequest.count > 0
             
             if let completionQueue = completionQueue {
-                completionQueue.sync { handler.completion?(groupRequest.isEmpty) }
+                completionQueue.sync { handler.completion?(!abort && groupRequest.isEmpty) }
                 
                 self.session.delegateQueue.addOperation { self.delegate?.client(self, didFinish: originalReq) }
             }

@@ -44,8 +44,9 @@ extension Request {
         return req
     }
     
-    static var Lesson4_1: Request {
-        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": "4_1"])
+    static func Lesson4_1(param: @autoclosure @escaping () -> String) -> Request {
+        // FIXME: Fix when bug is fixed
+        let req = try! Request(for: API(method: .GET, path: "notes"), parameters: ["lesson": param()])
             .apply(templateWithID: nil)
         return req
     }
@@ -153,6 +154,7 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
         // To make batch requests, pass a `[Request]` type or use the `&` operator
         let idx = segmentedControl.selectedSegmentIndex
         let mode: GroupRequestMode = idx == 0 ? .abort : idx == 1 ? .ignore : .recover
+        var paramValue: String!
         
         let req1 = Request.Lesson1.data { (_, _) in
             self.setLabel(for: 1)
@@ -160,6 +162,7 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
             print("IT'S RAW!")
         }
         let req2 = Request.Lesson2.data { (_, _) in
+            paramValue = "4_1"
             self.setLabel(for: 2)
         }
         var req3 = Request.Lesson3
@@ -179,19 +182,22 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
                                           alternative: req5)
             })
         }
-        
-        let req4 = Request.Lesson4_1.data { (_, _) in
-            self.setLabel(for: 4)
-        }
+
+        let req4 = Request.Lesson4_1(param: paramValue)
+            .data { (_, _) in
+                self.setLabel(for: 4)
+            }
+            .failure({ (_, r) in
+                self.setLabel(for: 4, didFail: true)
+            })
         
         KRClient.shared.make(groupHTTPRequests: req1 & req2, req3, req4, mode: mode, completion: { (finished) in
             sender.isEnabled = true
             
             self.statusLabel.isHidden = false
             self.statusLabel.textColor = finished ? UIColor.green : UIColor.red
-            self.statusLabel.text = finished ? "All requests were finished." : "Group request was aborted."
+            self.statusLabel.text = finished ? "All requests are finished." : "Group request was aborted."
         })
-//        KRClient.shared.make(httpRequest: req1)
     }
     
 }
