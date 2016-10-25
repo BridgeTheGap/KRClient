@@ -139,6 +139,11 @@ public struct Request: RequestType {
         (self.urlRequest, self.parameters) = (urlRequest, parameters)
     }
     
+    public init(for api: API, parameters: @escaping () -> [String: Any]) throws {
+        let urlRequest = try KRClient.shared.getURLRequest(withID: kDEFAULT_API_ID, for: api, parameters: nil)
+        (self.urlRequest, self.parameters) = (urlRequest, parameters)
+    }
+
     public init(withID ID: String, for api: API, parameters: [String: Any]? = nil) throws {
         let urlRequest = try KRClient.shared.getURLRequest(withID: ID, for: api, parameters: parameters)
         self.urlRequest = urlRequest
@@ -149,12 +154,22 @@ public struct Request: RequestType {
         (self.urlRequest, self.parameters) = (urlRequest, parameters)
     }
     
+    public init(withID ID: String, for api: API, parameters: @escaping () -> [String: Any]) throws {
+        let urlRequest = try KRClient.shared.getURLRequest(withID: ID, for: api, parameters: nil)
+        (self.urlRequest, self.parameters) = (urlRequest, parameters)
+    }
+    
     public init(method: HTTPMethod, urlString: String, parameters: [String: Any]? = nil) throws {
         let urlRequest = try KRClient.shared.getURLRequest(method: method, urlString: urlString, parameters: parameters)
         self.urlRequest = urlRequest
     }
     
     public init(method: HTTPMethod, urlString: String, parameters: @autoclosure @escaping () -> [String: Any]) throws {
+        let urlRequest = try KRClient.shared.getURLRequest(method: method, urlString: urlString, parameters: nil)
+        (self.urlRequest, self.parameters) = (urlRequest, parameters)
+    }
+    
+    public init(method: HTTPMethod, urlString: String, parameters: @escaping () -> [String: Any]) throws {
         let urlRequest = try KRClient.shared.getURLRequest(method: method, urlString: urlString, parameters: nil)
         (self.urlRequest, self.parameters) = (urlRequest, parameters)
     }
