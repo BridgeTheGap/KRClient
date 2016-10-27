@@ -8,32 +8,7 @@
 
 import UIKit
 
-public typealias URLResponseTest = (_ data: Data, _ response: HTTPURLResponse) -> ResponseValidation
-
-public struct ResponseValidation {
-    
-    public let didSucceed: Bool
-    public var alternative: Request?
-    public var description: String?
-    public var failureReason: String?
-    
-    public init(predicate: Bool, alternative: Request? = nil) {
-        (self.didSucceed, self.alternative) = (predicate, alternative)
-    }
-    
-    public func description(_ description: String) -> ResponseValidation {
-        var copy = self
-        copy.description = description
-        return copy
-    }
-    
-    public func failureReason(_ failureReason: String) -> ResponseValidation {
-        var copy = self
-        copy.failureReason = failureReason
-        return copy
-    }
-    
-}
+public typealias URLResponseTest = (_ data: Data, _ response: HTTPURLResponse) -> (error: NSError?, alternative: Request?)
 
 public protocol RequestType { }
 
@@ -59,9 +34,31 @@ public struct RequestTemplate {
     }
     
     public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Bool) -> RequestTemplate {
+        return convert(responseTest: responseTest)
+    }
+    
+    public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> NSError?) -> RequestTemplate {
+        return convert(responseTest: responseTest)
+    }
+
+    public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Request?) -> RequestTemplate {
+        return convert(responseTest: responseTest)
+    }
+    
+    private func convert(responseTest: @escaping (Data, HTTPURLResponse) -> Any) -> RequestTemplate {
         var req = self
-        req.responseTest = { ResponseValidation(predicate: responseTest($0, $1 as HTTPURLResponse),
-                                                alternative: nil) }
+        req.responseTest = {
+            switch responseTest($0, $1 as HTTPURLResponse) {
+            case let result as Request:
+                return (getError(from: ErrorKind.dataFailedToPassValidation), result)
+            case let result as NSError:
+                return (result, nil)
+            case let result as Bool:
+                return result ? (nil, nil) : (getError(from: ErrorKind.dataFailedToPassValidation), nil)
+            default:
+                return (nil, nil)
+            }
+        }
         return req
     }
     
@@ -181,9 +178,31 @@ public struct Request: RequestType {
     }
     
     public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Bool) -> Request {
+        return convert(responseTest: responseTest)
+    }
+    
+    public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> NSError?) -> Request {
+        return convert(responseTest: responseTest)
+    }
+    
+    public func responseTest(_ responseTest: @escaping (Data, HTTPURLResponse) -> Request?) -> Request {
+        return convert(responseTest: responseTest)
+    }
+    
+    private func convert(responseTest: @escaping (Data, HTTPURLResponse) -> Any) -> Request {
         var req = self
-        req.responseTest = { ResponseValidation(predicate: responseTest($0, $1 as HTTPURLResponse),
-                                                alternative: nil) }
+        req.responseTest = {
+            switch responseTest($0, $1 as HTTPURLResponse) {
+            case let result as Request:
+                return (getError(from: ErrorKind.dataFailedToPassValidation), result)
+            case let result as NSError:
+                return (result, nil)
+            case let result as Bool:
+                return result ? (nil, nil) : (getError(from: ErrorKind.dataFailedToPassValidation), nil)
+            default:
+                return (nil, nil)
+            }
+        }
         return req
     }
     

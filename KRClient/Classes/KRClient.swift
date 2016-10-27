@@ -304,39 +304,19 @@ open class KRClient: NSObject {
         
         self.session.dataTask(with: request.urlRequest, completionHandler: { (optData, optResponse, optError) in
             delegateQueue.async {
+                var alternative: Request?
+                
                 do {
                     guard let data = optData else { throw optError! }
                     
                     let response = optResponse as! HTTPURLResponse
-                    let validation = request.responseTest?(data, response) ?? ResponseValidation(predicate: true)
                     
-                    guard validation.didSucceed else {
-                        let error = ErrorKind.dataFailedToPassValidation(description: validation.description,
-                                                                         failureReason: validation.failureReason)
-                        
-                        if let alternative = validation.alternative {
-                            print("<KRClient> The original request (\(request.urlRequest)) failed.")
-                            
-                            if let handler = groupRequestHandler {
-                                if let failureHandler = request.failureHandler {
-                                    if case KRClientFailureHandler.failure(let handler) = failureHandler {
-                                        handler(error as NSError, optResponse)
-                                    }
-                                }
-                                
-                                handler.failure()
-                                handler.alternative = alternative
-                            } else {
-                                print("<KRClient> Attempting to recover from failure (\(alternative.urlRequest)).")
-                                KRClient.shared.make(httpRequest: alternative, groupRequestHandler: nil)
-                            }
-                            
-                            return
-                        } else {
-                            throw getError(from: error)
+                    if let validation = request.responseTest?(data, response) {
+                        guard validation.error == nil, validation.alternative == nil else {
+                            alternative = validation.alternative
+                            throw validation.error ?? getError(from: ErrorKind.dataFailedToPassValidation)
                         }
                     }
-                    
                     
                     delegate?.client(self, willFinish: request, at: counter, withSuccess: true)
                     
@@ -373,15 +353,26 @@ open class KRClient: NSObject {
                     
                     groupRequestHandler?.success()
                 } catch let error {
-                    defer { groupRequestHandler?.failure() }
-                    
                     delegate?.client(self, willFinish: request, at: counter, withSuccess: false)
                     
                     guard let failureHandler = request.failureHandler else { return }
                     guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
                     handler(error as NSError, optResponse)
                     
-                    delegate?.client(self, didFinish: request, at: counter, withSuccess: false)
+                    defer {
+                        delegate?.client(self, didFinish: request, at: counter, withSuccess: false)
+
+                        if let groupRequestHandler = groupRequestHandler {
+                            groupRequestHandler.alternative = alternative
+                            groupRequestHandler.failure()
+                        } else if let alternative = alternative {
+                            print("<KRClient> Attempting to recover from failure (\(alternative.urlRequest)).")
+                            
+                            self.session.delegateQueue.addOperation {
+                                self.make(httpRequest: alternative, groupRequestHandler: nil)
+                            }
+                        }
+                    }
                 }
             }
         }).resume()

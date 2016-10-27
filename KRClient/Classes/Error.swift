@@ -25,7 +25,7 @@ public enum ErrorKind: Error {
     case invalidOperation(description: String?, file: String, line: Int)
     case requestFailed(description: String?)
     case failedToConvertStringToURL(string: String)
-    case dataFailedToPassValidation(description: String?, failureReason: String?)
+    case dataFailedToPassValidation
     case dataFailedToConvertToString
 }
 
@@ -51,10 +51,9 @@ internal func getError(from errorStruct: ErrorKind?) -> NSError {
                 NSLocalizedDescriptionKey: "Failed to initialze an NSURL instance with string: \(string)."
                 ])
             
-        case .dataFailedToPassValidation(description: let description, failureReason: let failureReason):
+        case .dataFailedToPassValidation:
             return NSError(domain: ErrorDomain.Response, code: ErrorCode.DataFailedToPassValidation, userInfo:[
-                NSLocalizedDescriptionKey: description ?? "The response data failed to pass validation.",
-                NSLocalizedFailureReasonErrorKey: failureReason ?? "Unknown."
+                NSLocalizedDescriptionKey: "The response data failed to pass validation.",
                 ])
             
         case .dataFailedToConvertToString:

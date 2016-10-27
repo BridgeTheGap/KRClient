@@ -173,13 +173,14 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
             })
         
         if mode == .recover {
-            req3 = req3.responseTest({ (_, response) -> ResponseValidation in
-                let req5 = Request.Lesson4_2.data({ (_, _) in
-                    self.setLabel(for: 5)
-                })
-                return ResponseValidation(predicate: response.statusCode == 200,
-                                          alternative: req5)
-            })
+            req3 = req3.responseTest { (_, response) -> Request? in
+                if response.statusCode != 200 {
+                    return Request.Lesson4_2.data { (_, _) in
+                        self.setLabel(for: 5)
+                    }
+                }
+                return nil
+            }
         }
 
         let req4 = Request.Lesson4_1(param: paramValue)
@@ -189,7 +190,7 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
             .failure({ (_, r) in
                 self.setLabel(for: 4, didFail: true)
             })
-        
+
         KRClient.shared.make(groupHTTPRequests: req1 & req2, req3, req4, mode: mode, completion: { (finished) in
             sender.isEnabled = true
             
