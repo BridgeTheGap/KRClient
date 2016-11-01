@@ -75,7 +75,7 @@ public protocol NetworkIndicatorDelegate: KRClientDelegate {}
 public extension NetworkIndicatorDelegate {
     public func client(_ client: KRClient, willMake request: Request, at index: Position?) {
         if let indicatorView = client.indicatorView, index == nil {
-            UIApplication.shared.keyWindow?.addSubview(indicatorView)
+            DispatchQueue.main.async { UIApplication.shared.keyWindow?.addSubview(indicatorView) }
         }
     }
     
@@ -84,8 +84,8 @@ public extension NetworkIndicatorDelegate {
     public func client(_ client: KRClient, willFinish request: Request, at index: Position?, withSuccess isSuccess: Bool) { }
     
     public func client(_ client: KRClient, didFinish request: Request, at index: Position?, withSuccess isSuccess: Bool) {
-        if index == nil {
-            client.indicatorView?.removeFromSuperview()
+        if let indicatorView = client.indicatorView, index == nil {
+            DispatchQueue.main.async { indicatorView.removeFromSuperview() }
         }
     }
     
