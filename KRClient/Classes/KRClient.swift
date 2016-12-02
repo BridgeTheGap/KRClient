@@ -217,7 +217,7 @@ open class KRClient: NSObject {
         var request: URLRequest = try {
             if let params = parameters {
                 switch method {
-                case .GET:
+                case .GET, .HEAD:
                     let strQuery = getQueryString(from: params)
                     guard let url = URL(string: urlString + strQuery) else {
                         throw ErrorKind.failedToConvertStringToURL(string: urlString + strQuery)

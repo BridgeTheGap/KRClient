@@ -7,8 +7,11 @@
 //
 
 public enum HTTPMethod: String {
+    
     case GET = "GET"
+    case HEAD = "HEAD"
     case POST = "POST"
+    
 }
 
 public struct API {
