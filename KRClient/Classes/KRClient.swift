@@ -307,7 +307,11 @@ open class KRClient: NSObject {
                 var alternative: Request?
                 
                 do {
-                    guard let data = optData else { throw optError! }
+                    guard let data = optData else {
+                        throw optError ?? NSError(domain: ErrorDomain.Response,
+                                                  code: ErrorCode.Unknown,
+                                                  userInfo: ["response": optResponse as Any])
+                    }
                     
                     let response = optResponse as! HTTPURLResponse
                     
