@@ -161,9 +161,10 @@ open class KRClient: NSObject {
         self.templates[identifier] = template
     }
     
-    private func getQueryString(from parameters: [String: Any]) -> String {
+    private func getQueryString(from parameters: [String: Any]) throws -> String {
         let queryString = "?" + parameters.map({ "\($0)=\($1)" }).joined(separator: "&")
-        return URLEscapedString(queryString)
+        guard let str = queryString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { fatalError() }
+        return str
     }
     
     // MARK: - URL Request
@@ -171,21 +172,21 @@ open class KRClient: NSObject {
     open func getURLRequest(from baseRequest: URLRequest, parameters: [String: Any]) throws -> URLRequest {
         guard let urlString = baseRequest.url?.absoluteString else {
             let message = "<KRClient> Attempt to make a `URLRequest` from an empty string."
-            throw ErrorKind.invalidOperation(description: message, file: #file, line: #line)
+            throw KRClientError.invalidOperation(description: message, location: (file: #file, line: #line))
         }
         
         switch baseRequest.httpMethod ?? "GET" {
         case "POST":
             guard let url = URL(string: urlString) else {
-                throw ErrorKind.failedToConvertStringToURL(string: urlString)
+                throw KRClientError.stringToURLConversionFailure(string: urlString)
             }
             var request = URLRequest(url: url)
-            request.httpBody = try JSONData(parameters)
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters)
             return request
         default:
-            let strQuery = getQueryString(from: parameters)
+            let strQuery = try getQueryString(from: parameters)
             guard let url = URL(string: urlString + strQuery) else {
-                throw ErrorKind.failedToConvertStringToURL(string: urlString + strQuery)
+                throw KRClientError.stringToURLConversionFailure(string: urlString + strQuery)
             }
             return URLRequest(url: url)
         }
@@ -196,7 +197,7 @@ open class KRClient: NSObject {
             let message = identifier == kDEFAULT_API_ID ?
                 "<KRClient> There is no default host set." :
                 "<KRClient> There is no host name set for the identifier: \(identifier)"
-            throw ErrorKind.invalidOperation(description: message, file: #file, line: #line)
+            throw KRClientError.invalidOperation(description: message, location: (file: #file, line: #line))
         }
         
         let strProtocol = api.SSL ? "https://" : "http://"
@@ -218,25 +219,25 @@ open class KRClient: NSObject {
             if let params = parameters {
                 switch method {
                 case .GET, .HEAD:
-                    let strQuery = getQueryString(from: params)
+                    let strQuery = try getQueryString(from: params)
                     guard let url = URL(string: urlString + strQuery) else {
-                        throw ErrorKind.failedToConvertStringToURL(string: urlString + strQuery)
+                        throw KRClientError.stringToURLConversionFailure(string: urlString + strQuery)
                     }
                     return URLRequest(url: url)
                     
                 case .POST:
                     guard let url = URL(string: urlString) else {
-                        throw ErrorKind.failedToConvertStringToURL(string: urlString)
+                        throw KRClientError.stringToURLConversionFailure(string: urlString)
                     }
                     var request = URLRequest(url: url)
-                    request.httpBody = try JSONData(params)
+                    request.httpBody = try JSONSerialization.data(withJSONObject: params)
                     return request
                     
                 // TODO: Implementation
                 }
             } else {
                 guard let url = URL(string: urlString) else {
-                    throw ErrorKind.failedToConvertStringToURL(string: urlString)
+                    throw KRClientError.stringToURLConversionFailure(string: urlString)
                 }
                 return URLRequest(url: url)
             }
@@ -254,9 +255,9 @@ open class KRClient: NSObject {
         do {
             let request = try getURLRequest(method: method, urlString: urlString)
             make(httpRequest: request, successHandler: successHandler, failureHandler: failureHandler)
-        } catch let error {
-            if let errorStruct = error as? ErrorKind {
-                print(getError(from: errorStruct))
+        } catch {
+            if let error = error as? KRClientError {
+                print(error.nsError)
             } else {
                 print(error)
             }
@@ -267,9 +268,9 @@ open class KRClient: NSObject {
         do {
             let request = try getURLRequest(withID: apiIdentifier, for: requestAPI)
             make(httpRequest: request, successHandler: successHandler, failureHandler: failureHandler)
-        } catch let error {
-            if let errorStruct = error as? ErrorKind {
-                print(getError(from: errorStruct))
+        } catch {
+            if let error = error as? KRClientError {
+                print(error.nsError)
             } else {
                 print(error)
             }
@@ -307,10 +308,10 @@ open class KRClient: NSObject {
                 var alternative: Request?
                 
                 do {
-                    guard let data = optData else {
-                        throw optError ?? NSError(domain: ErrorDomain.Response,
-                                                  code: ErrorCode.Unknown,
-                                                  userInfo: ["response": optResponse as Any])
+                    guard let data = optData, !data.isEmpty else {
+                        throw optError ?? NSError(domain: KRClientError.Domain.response,
+                                                  code: KRClientError.ErrorCode.unknown,
+                                                  userInfo: [KRClientError.UserInfoKey.urlResponse: optResponse as Any])
                     }
                     
                     let response = optResponse as! HTTPURLResponse
@@ -318,7 +319,7 @@ open class KRClient: NSObject {
                     if let validation = request.responseTest?(data, response) {
                         guard validation.error == nil, validation.alternative == nil else {
                             alternative = validation.alternative
-                            throw validation.error ?? getError(from: ErrorKind.dataFailedToPassValidation)
+                            throw validation.error ?? KRClientError.dataValidationFailure.nsError
                         }
                     }
                     
@@ -332,13 +333,15 @@ open class KRClient: NSObject {
                         handler(data, optResponse!)
                         
                     case .json(let handler):
-                        let json = try JSONDictionary(data)
+                        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                            throw KRClientError.dataConversionFailure(type: [String: Any].self)
+                        }
                         handler(json, optResponse!)
                         
                     case .string(let handler):
                         let encoding: UInt = {
                             if let encodingName = response.textEncodingName {
-                                let cfEncoding = CFStringConvertIANACharSetNameToEncoding(encodingName as CFString!)
+                                let cfEncoding = CFStringConvertIANACharSetNameToEncoding(encodingName as CFString)
                                 return CFStringConvertEncodingToNSStringEncoding(cfEncoding)
                             } else {
                                 return String.Encoding.isoLatin1.rawValue
@@ -346,7 +349,7 @@ open class KRClient: NSObject {
                         }()
                         
                         guard let string = String(data: data, encoding: String.Encoding(rawValue: encoding)) else {
-                            throw getError(from: ErrorKind.dataFailedToConvertToString)
+                            throw KRClientError.dataConversionFailure(type: String.self)
                         }
                         
                         handler(string, optResponse!)

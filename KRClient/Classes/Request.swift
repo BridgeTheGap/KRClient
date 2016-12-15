@@ -50,11 +50,11 @@ public struct RequestTemplate {
         req.responseTest = {
             switch responseTest($0, $1 as HTTPURLResponse) {
             case let result as Request:
-                return (getError(from: ErrorKind.dataFailedToPassValidation), result)
+                return (KRClientError.dataValidationFailure.nsError, result)
             case let result as NSError:
                 return (result, nil)
             case let result as Bool:
-                return result ? (nil, nil) : (getError(from: ErrorKind.dataFailedToPassValidation), nil)
+                return result ? (nil, nil) : (KRClientError.dataValidationFailure.nsError, nil)
             default:
                 return (nil, nil)
             }
@@ -194,11 +194,11 @@ public struct Request: RequestType {
         req.responseTest = {
             switch responseTest($0, $1 as HTTPURLResponse) {
             case let result as Request:
-                return (getError(from: ErrorKind.dataFailedToPassValidation), result)
+                return (KRClientError.dataValidationFailure.nsError, result)
             case let result as NSError:
                 return (result, nil)
             case let result as Bool:
-                return result ? (nil, nil) : (getError(from: ErrorKind.dataFailedToPassValidation), nil)
+                return result ? (nil, nil) : (KRClientError.dataValidationFailure.nsError, nil)
             default:
                 return (nil, nil)
             }
@@ -284,18 +284,18 @@ extension Array: RequestType { }
 
 public typealias BatchRequest = Array<Request>
 
-public func &(lhs: Request, rhs: Request) -> BatchRequest {
+public func |(lhs: Request, rhs: Request) -> BatchRequest {
     return [lhs, rhs]
 }
 
-public func &(lhs: Request, rhs: BatchRequest) -> BatchRequest {
+public func |(lhs: Request, rhs: BatchRequest) -> BatchRequest {
     return [lhs] + rhs
 }
 
-public func &(lhs: BatchRequest, rhs: Request) -> BatchRequest {
+public func |(lhs: BatchRequest, rhs: Request) -> BatchRequest {
     return lhs + [rhs]
 }
 
-public func &(lhs: BatchRequest, rhs: BatchRequest) -> BatchRequest {
+public func |(lhs: BatchRequest, rhs: BatchRequest) -> BatchRequest {
     return lhs + rhs
 }

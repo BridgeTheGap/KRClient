@@ -182,7 +182,7 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
                 return nil
             }
         }
-
+        
         let req4 = Request.Lesson4_1(param: paramValue)
             .data { (_, _) in
                 self.setLabel(for: 4)
@@ -191,7 +191,7 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
                 self.setLabel(for: 4, didFail: true)
             })
 
-        KRClient.shared.make(groupHTTPRequests: req1 & req2, req3, req4, mode: mode, completion: { (finished) in
+        KRClient.shared.make(groupHTTPRequests: req1 | req2, req3, req4, mode: mode, completion: { (finished) in
             sender.isEnabled = true
             
             self.statusLabel.isHidden = false

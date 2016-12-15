@@ -7,43 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		030F0B6B1D80FDA000C4D91A /* KRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B6A1D80FDA000C4D91A /* KRClient.swift */; };
-		030F0B6D1D80FE2900C4D91A /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B6C1D80FE2900C4D91A /* API.swift */; };
-		030F0B6F1D8114EA00C4D91A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B6E1D8114EA00C4D91A /* Error.swift */; };
-		030F0B711D811DC500C4D91A /* KRClientConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B701D811DC500C4D91A /* KRClientConvenience.swift */; };
-		030F0B751D81921300C4D91A /* JSONConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030F0B741D81921300C4D91A /* JSONConvenience.swift */; };
-		035555411D81F2C50085281F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035555401D81F2C50085281F /* Request.swift */; };
-		17E5213EBC84E8AD6FF7DFED3EEEEA7F /* Pods-KRClient_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E18A34B1377B27986F5CD4DA12F3757 /* Pods-KRClient_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		22F657ED01D0A1B78C2144FD485C91EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		5BDF08AE3DEE57D81074B54FC4DA0AA6 /* KRClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 11B167A9EFC6E3B00B0E2105E24CC655 /* KRClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A132F15C3A0CE4DD339BFC7626409AF3 /* Pods-KRClient_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ED80310E5B3B8DE1061ADAC91883C2F4 /* Pods-KRClient_Example-dummy.m */; };
-		AED831E1B41B0F0CF2219525EF54FC82 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		CAB3BE978759EFFC851A70AE803A7D7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		D88231AADF5036E4CD8BFFC825C2CB90 /* Pods-KRClient_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ED0D6C2F97F71B1BE48054858E52DD7B /* Pods-KRClient_Tests-dummy.m */; };
-		DA9079AF8EB739D052CF9B9F9DAD0AE7 /* Pods-KRClient_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5039A3806F0B8037471D58235853E7 /* Pods-KRClient_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA10333814B94C8432C9166E8EFAFB1E /* KRClient-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4152D706C934274D7007FC4E3F96DCC /* KRClient-dummy.m */; };
+		00239CAC351348C276DBBB77ECE4C360 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B83003D017BACCEA1942C235B17318 /* Request.swift */; };
+		0D93C6D8AE49EE53F1DFEA96F4891818 /* KRClientConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = B328F90DAD3B41993A4B68C7D171BB1D /* KRClientConvenience.swift */; };
+		146CF75CD3FD37661AD9BFC200E60E83 /* KRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611E2060C4F5B287F4CFA0879831F487 /* KRClient.swift */; };
+		3055A8A4428937CD99C52AAA3A31D02F /* Pods-KRClient_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ED0D6C2F97F71B1BE48054858E52DD7B /* Pods-KRClient_Tests-dummy.m */; };
+		30ED1CB9186BF96815E4671DDC762DDA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA87712CC64AB5FA8C584D2A36C064 /* API.swift */; };
+		7F07320EB97946DF2E373448FAC9F82E /* KRClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 11B167A9EFC6E3B00B0E2105E24CC655 /* KRClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8119990B016272EB091361D58FA7A493 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		8C230F39372D07166665F697AD333F0C /* KRClient-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4152D706C934274D7007FC4E3F96DCC /* KRClient-dummy.m */; };
+		A57763B24F488D60593605A666F61BC3 /* Pods-KRClient_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5039A3806F0B8037471D58235853E7 /* Pods-KRClient_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B1C3C269BE4BF7A703FFA39354CA6319 /* Pods-KRClient_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ED80310E5B3B8DE1061ADAC91883C2F4 /* Pods-KRClient_Example-dummy.m */; };
+		B99ED7D1FEF84EA416D4664E5258C946 /* Pods-KRClient_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E18A34B1377B27986F5CD4DA12F3757 /* Pods-KRClient_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BA3619A4388CF5A27736767653140FDE /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBBEA7C9C8AC84CA719F56516655AD /* Error.swift */; };
+		D7DA5FB57FD0268CFDFCDF981DFB05E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		DC3EEE64AD8E5E88F9E197B63AF86265 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		78E0406FD6B63930E7C41B10E8129FA3 /* PBXContainerItemProxy */ = {
+		15A2080BEB7E00CE41CEA36E43CA99DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 160E66AC4769605561B584BBA255AEA4;
+			remoteGlobalIDString = 0FD1D28ED7D065B6B657BE2BECBE7264;
 			remoteInfo = KRClient;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		030F0B6A1D80FDA000C4D91A /* KRClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRClient.swift; sourceTree = "<group>"; };
-		030F0B6C1D80FE2900C4D91A /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		030F0B6E1D8114EA00C4D91A /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
-		030F0B701D811DC500C4D91A /* KRClientConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KRClientConvenience.swift; sourceTree = "<group>"; };
-		030F0B741D81921300C4D91A /* JSONConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONConvenience.swift; sourceTree = "<group>"; };
-		035555401D81F2C50085281F /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		11B167A9EFC6E3B00B0E2105E24CC655 /* KRClient-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KRClient-umbrella.h"; sourceTree = "<group>"; };
 		1CE848F43CA986565EB129723BD86BC9 /* Pods-KRClient_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-KRClient_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		1FFD48F55FB920148A93229D8A839FD0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		29B83003D017BACCEA1942C235B17318 /* Request.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		2E18A34B1377B27986F5CD4DA12F3757 /* Pods-KRClient_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-KRClient_Tests-umbrella.h"; sourceTree = "<group>"; };
 		3035B3A8DFFB647B10881DB17A17962A /* Pods-KRClient_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-KRClient_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		356C9884478C4664CFC6E14813C4231D /* Pods-KRClient_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-KRClient_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -51,6 +45,7 @@
 		3BF4CC71E321F0E9A6843C998AE84A09 /* Pods-KRClient_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-KRClient_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		40B30FA1E43F306074F62B6B4223DE31 /* Pods_KRClient_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KRClient_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		54266542462E67BC379D93E83466E135 /* Pods_KRClient_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KRClient_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		611E2060C4F5B287F4CFA0879831F487 /* KRClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KRClient.swift; sourceTree = "<group>"; };
 		639A1FEDDB1602A1B1E78440208F93CF /* Pods-KRClient_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-KRClient_Example-resources.sh"; sourceTree = "<group>"; };
 		663D06F9B83B4E41FC4DFE2B7906910B /* Pods-KRClient_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-KRClient_Tests.modulemap"; sourceTree = "<group>"; };
 		6FD103BAC16576A83B9D61A1C62691CE /* KRClient.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = KRClient.modulemap; sourceTree = "<group>"; };
@@ -59,10 +54,13 @@
 		8A5039A3806F0B8037471D58235853E7 /* Pods-KRClient_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-KRClient_Example-umbrella.h"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		99FE64929ABE557E84E874FF80272718 /* Pods-KRClient_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-KRClient_Tests-resources.sh"; sourceTree = "<group>"; };
+		AABBBEA7C9C8AC84CA719F56516655AD /* Error.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		B2CA87712CC64AB5FA8C584D2A36C064 /* API.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		B328F90DAD3B41993A4B68C7D171BB1D /* KRClientConvenience.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KRClientConvenience.swift; sourceTree = "<group>"; };
 		B4152D706C934274D7007FC4E3F96DCC /* KRClient-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "KRClient-dummy.m"; sourceTree = "<group>"; };
 		B8E6D66EA4C60E629B67F22755F084F8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC00EBC95014A10CFF8DB5222D4DD611 /* KRClient.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KRClient.xcconfig; sourceTree = "<group>"; };
-		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		DF928205817CC0F56DF683BF5C07D58B /* KRClient-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KRClient-prefix.pch"; sourceTree = "<group>"; };
 		E153F2951CD1C523E50A56DE732D085C /* Pods-KRClient_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-KRClient_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E597419FC3E2003286363C24CCEC7B89 /* Pods-KRClient_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-KRClient_Example.modulemap"; sourceTree = "<group>"; };
@@ -75,27 +73,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		10A7765ABBC9C2EE5E980D085E2B18FF /* Frameworks */ = {
+		5FF6F0F5CD9E30F776566E078FFBBD6D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAB3BE978759EFFC851A70AE803A7D7D /* Foundation.framework in Frameworks */,
+				D7DA5FB57FD0268CFDFCDF981DFB05E5 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		446301C34E4082D1CAEC2691233DF905 /* Frameworks */ = {
+		6A8E01A2B0F57EBCC3A9AF0DE07CD558 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22F657ED01D0A1B78C2144FD485C91EA /* Foundation.framework in Frameworks */,
+				DC3EEE64AD8E5E88F9E197B63AF86265 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EC3D2CF2414835D61741231614B27E73 /* Frameworks */ = {
+		9C2C27BCA8AD4E0B1345C01F428D9C7F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AED831E1B41B0F0CF2219525EF54FC82 /* Foundation.framework in Frameworks */,
+				8119990B016272EB091361D58FA7A493 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,14 +124,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		215BEFE2825FDB46FF2A064AB5655CD4 /* KRClient */ = {
-			isa = PBXGroup;
-			children = (
-				F9266C125240FDFC855960606385AFBA /* Classes */,
-			);
-			path = KRClient;
-			sourceTree = "<group>";
-		};
 		3C0CE2FFA257AB5C518C0AA8EEA4B5F5 /* Pods-KRClient_Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,22 +142,22 @@
 			path = "Target Support Files/Pods-KRClient_Tests";
 			sourceTree = "<group>";
 		};
-		3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
 		69B9E965974F7222E7915FEEE3FAF58F /* KRClient */ = {
 			isa = PBXGroup;
 			children = (
-				215BEFE2825FDB46FF2A064AB5655CD4 /* KRClient */,
+				E47CB09F7E704FF02ED8108DC79CBAE3 /* KRClient */,
 				031E1ACC33CB44B90A1113B3A5EBC8F5 /* Support Files */,
 			);
 			name = KRClient;
 			path = ../..;
+			sourceTree = "<group>";
+		};
+		7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -211,7 +201,7 @@
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */,
+				7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -224,15 +214,22 @@
 			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		F9266C125240FDFC855960606385AFBA /* Classes */ = {
+		E47CB09F7E704FF02ED8108DC79CBAE3 /* KRClient */ = {
 			isa = PBXGroup;
 			children = (
-				030F0B6A1D80FDA000C4D91A /* KRClient.swift */,
-				030F0B6C1D80FE2900C4D91A /* API.swift */,
-				030F0B6E1D8114EA00C4D91A /* Error.swift */,
-				035555401D81F2C50085281F /* Request.swift */,
-				030F0B701D811DC500C4D91A /* KRClientConvenience.swift */,
-				030F0B741D81921300C4D91A /* JSONConvenience.swift */,
+				EE20FFEA33D492E052A58EDE88ED5637 /* Classes */,
+			);
+			path = KRClient;
+			sourceTree = "<group>";
+		};
+		EE20FFEA33D492E052A58EDE88ED5637 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B2CA87712CC64AB5FA8C584D2A36C064 /* API.swift */,
+				AABBBEA7C9C8AC84CA719F56516655AD /* Error.swift */,
+				611E2060C4F5B287F4CFA0879831F487 /* KRClient.swift */,
+				B328F90DAD3B41993A4B68C7D171BB1D /* KRClientConvenience.swift */,
+				29B83003D017BACCEA1942C235B17318 /* Request.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -240,40 +237,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		11693E228C1A7659528DD78A4CC98E34 /* Headers */ = {
+		43F1A17B3DDA11F6A59993EA547611C3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BDF08AE3DEE57D81074B54FC4DA0AA6 /* KRClient-umbrella.h in Headers */,
+				A57763B24F488D60593605A666F61BC3 /* Pods-KRClient_Example-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3AE720CCE43DAF91082D6E8D168C4F43 /* Headers */ = {
+		72CFF9F3FEA626C568CC4DEBE3323BB1 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17E5213EBC84E8AD6FF7DFED3EEEEA7F /* Pods-KRClient_Tests-umbrella.h in Headers */,
+				B99ED7D1FEF84EA416D4664E5258C946 /* Pods-KRClient_Tests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CBBDAD6A9452360F404FF99693285C62 /* Headers */ = {
+		E99D51984B45EB0FB8648249DF354F77 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA9079AF8EB739D052CF9B9F9DAD0AE7 /* Pods-KRClient_Example-umbrella.h in Headers */,
+				7F07320EB97946DF2E373448FAC9F82E /* KRClient-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		160E66AC4769605561B584BBA255AEA4 /* KRClient */ = {
+		0FD1D28ED7D065B6B657BE2BECBE7264 /* KRClient */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A6E871C9E6762517B83798922E442CA2 /* Build configuration list for PBXNativeTarget "KRClient" */;
+			buildConfigurationList = 6BF85C3EA1AD6D325C6555DBE07D4CFE /* Build configuration list for PBXNativeTarget "KRClient" */;
 			buildPhases = (
-				A5C038C3BBDA420D9983CE6510B43CB8 /* Sources */,
-				446301C34E4082D1CAEC2691233DF905 /* Frameworks */,
-				11693E228C1A7659528DD78A4CC98E34 /* Headers */,
+				5352F61C20F089E2F450D52BA66A1A88 /* Sources */,
+				6A8E01A2B0F57EBCC3A9AF0DE07CD558 /* Frameworks */,
+				E99D51984B45EB0FB8648249DF354F77 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -284,13 +281,31 @@
 			productReference = 72C1852DC6C816AEA50B225231B9A2BC /* KRClient.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		9423B622260E9C557AA88B4186C38978 /* Pods-KRClient_Tests */ = {
+		5E3B62B255F862D6E422B6676A4A8846 /* Pods-KRClient_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0BFF2EB405CCCB2E0EC11309FD702DF8 /* Build configuration list for PBXNativeTarget "Pods-KRClient_Tests" */;
+			buildConfigurationList = 898B062409ED9DBD38B595A8848ED0CC /* Build configuration list for PBXNativeTarget "Pods-KRClient_Example" */;
 			buildPhases = (
-				3AE8B0CEAE775C43B38A75F0588B57F2 /* Sources */,
-				EC3D2CF2414835D61741231614B27E73 /* Frameworks */,
-				3AE720CCE43DAF91082D6E8D168C4F43 /* Headers */,
+				BFF02FEDF66498791BF8EB4A13AFACB3 /* Sources */,
+				9C2C27BCA8AD4E0B1345C01F428D9C7F /* Frameworks */,
+				43F1A17B3DDA11F6A59993EA547611C3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BCF67266DE4FA4B19F9B74F177A15D1E /* PBXTargetDependency */,
+			);
+			name = "Pods-KRClient_Example";
+			productName = "Pods-KRClient_Example";
+			productReference = 40B30FA1E43F306074F62B6B4223DE31 /* Pods_KRClient_Example.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BA0B3072DEFB7B0082BB1DB2398A240A /* Pods-KRClient_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 538122AD0A7BF5F6087E1B983C78B72B /* Build configuration list for PBXNativeTarget "Pods-KRClient_Tests" */;
+			buildPhases = (
+				5717CD9DB2EC5AECC8AA1BE37881356F /* Sources */,
+				5FF6F0F5CD9E30F776566E078FFBBD6D /* Frameworks */,
+				72CFF9F3FEA626C568CC4DEBE3323BB1 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -301,24 +316,6 @@
 			productReference = 54266542462E67BC379D93E83466E135 /* Pods_KRClient_Tests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		DCE2FA04CAAEE170CEF31E845095BFC8 /* Pods-KRClient_Example */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2960C029A2B7BB11DD579AC6DFEB7BB2 /* Build configuration list for PBXNativeTarget "Pods-KRClient_Example" */;
-			buildPhases = (
-				623473CC49BFE833E89B6489D00DDD22 /* Sources */,
-				10A7765ABBC9C2EE5E980D085E2B18FF /* Frameworks */,
-				CBBDAD6A9452360F404FF99693285C62 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				939F49448163064410A8A4190F093B09 /* PBXTargetDependency */,
-			);
-			name = "Pods-KRClient_Example";
-			productName = "Pods-KRClient_Example";
-			productReference = 40B30FA1E43F306074F62B6B4223DE31 /* Pods_KRClient_Example.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -327,17 +324,6 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
-				TargetAttributes = {
-					160E66AC4769605561B584BBA255AEA4 = {
-						LastSwiftMigration = 0800;
-					};
-					9423B622260E9C557AA88B4186C38978 = {
-						LastSwiftMigration = 0800;
-					};
-					DCE2FA04CAAEE170CEF31E845095BFC8 = {
-						LastSwiftMigration = 0800;
-					};
-				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -351,57 +337,91 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				160E66AC4769605561B584BBA255AEA4 /* KRClient */,
-				DCE2FA04CAAEE170CEF31E845095BFC8 /* Pods-KRClient_Example */,
-				9423B622260E9C557AA88B4186C38978 /* Pods-KRClient_Tests */,
+				0FD1D28ED7D065B6B657BE2BECBE7264 /* KRClient */,
+				5E3B62B255F862D6E422B6676A4A8846 /* Pods-KRClient_Example */,
+				BA0B3072DEFB7B0082BB1DB2398A240A /* Pods-KRClient_Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3AE8B0CEAE775C43B38A75F0588B57F2 /* Sources */ = {
+		5352F61C20F089E2F450D52BA66A1A88 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D88231AADF5036E4CD8BFFC825C2CB90 /* Pods-KRClient_Tests-dummy.m in Sources */,
+				30ED1CB9186BF96815E4671DDC762DDA /* API.swift in Sources */,
+				BA3619A4388CF5A27736767653140FDE /* Error.swift in Sources */,
+				8C230F39372D07166665F697AD333F0C /* KRClient-dummy.m in Sources */,
+				146CF75CD3FD37661AD9BFC200E60E83 /* KRClient.swift in Sources */,
+				0D93C6D8AE49EE53F1DFEA96F4891818 /* KRClientConvenience.swift in Sources */,
+				00239CAC351348C276DBBB77ECE4C360 /* Request.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		623473CC49BFE833E89B6489D00DDD22 /* Sources */ = {
+		5717CD9DB2EC5AECC8AA1BE37881356F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A132F15C3A0CE4DD339BFC7626409AF3 /* Pods-KRClient_Example-dummy.m in Sources */,
+				3055A8A4428937CD99C52AAA3A31D02F /* Pods-KRClient_Tests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A5C038C3BBDA420D9983CE6510B43CB8 /* Sources */ = {
+		BFF02FEDF66498791BF8EB4A13AFACB3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				030F0B6F1D8114EA00C4D91A /* Error.swift in Sources */,
-				FA10333814B94C8432C9166E8EFAFB1E /* KRClient-dummy.m in Sources */,
-				030F0B711D811DC500C4D91A /* KRClientConvenience.swift in Sources */,
-				030F0B6D1D80FE2900C4D91A /* API.swift in Sources */,
-				035555411D81F2C50085281F /* Request.swift in Sources */,
-				030F0B6B1D80FDA000C4D91A /* KRClient.swift in Sources */,
-				030F0B751D81921300C4D91A /* JSONConvenience.swift in Sources */,
+				B1C3C269BE4BF7A703FFA39354CA6319 /* Pods-KRClient_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		939F49448163064410A8A4190F093B09 /* PBXTargetDependency */ = {
+		BCF67266DE4FA4B19F9B74F177A15D1E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = KRClient;
-			target = 160E66AC4769605561B584BBA255AEA4 /* KRClient */;
-			targetProxy = 78E0406FD6B63930E7C41B10E8129FA3 /* PBXContainerItemProxy */;
+			target = 0FD1D28ED7D065B6B657BE2BECBE7264 /* KRClient */;
+			targetProxy = 15A2080BEB7E00CE41CEA36E43CA99DB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0ACDCBCB0B6796575F46FFA2F5410C6B /* Release */ = {
+		483A2D80EADF012030AD3F6A07DF589D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E153F2951CD1C523E50A56DE732D085C /* Pods-KRClient_Tests.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-KRClient_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-KRClient_Tests/Pods-KRClient_Tests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_KRClient_Tests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8DED8AD26D381A6ACFF202E5217EC498 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -419,6 +439,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -433,180 +454,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_VERSION = 3.0;
 				SYMROOT = "${SRCROOT}/../build";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		0F2824C9CA6E30EF4D19D0C7BE503E25 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC00EBC95014A10CFF8DB5222D4DD611 /* KRClient.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/KRClient/KRClient-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/KRClient/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/KRClient/KRClient.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = KRClient;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		4B4C808DEF153859AA83A0A19C4CA86F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F12A945516386D49F2D301E2D0A68B35 /* Pods-KRClient_Example.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-KRClient_Example/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-KRClient_Example/Pods-KRClient_Example.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_KRClient_Example;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		70635704F57884E227BF542DDEBA6AD2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E77E894B286DE2AD0763DACF600BA580 /* Pods-KRClient_Tests.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-KRClient_Tests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-KRClient_Tests/Pods-KRClient_Tests.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_KRClient_Tests;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		8603E25D66016F4E7C22CA1047020653 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA9ED963114E7CE8F26539C953224C07 /* Pods-KRClient_Example.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-KRClient_Example/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-KRClient_Example/Pods-KRClient_Example.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_KRClient_Example;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		AC1357B3B98152DC08703599FB76B7A6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC00EBC95014A10CFF8DB5222D4DD611 /* KRClient.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/KRClient/KRClient-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/KRClient/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/KRClient/KRClient.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = KRClient;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		D3E3D092A3FF7311A98E44BBA36FFD12 /* Debug */ = {
+		9E1E4E48AF2EAB23169E611BF694090A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -624,6 +479,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -643,19 +499,56 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_VERSION = 3.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
-		E5BF1C0D841DFDA54523ED256ADE082A /* Debug */ = {
+		B4F0DFF195F9C9E54677A0E93FA6974F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E153F2951CD1C523E50A56DE732D085C /* Pods-KRClient_Tests.debug.xcconfig */;
+			baseConfigurationReference = F12A945516386D49F2D301E2D0A68B35 /* Pods-KRClient_Example.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-KRClient_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-KRClient_Example/Pods-KRClient_Example.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_KRClient_Example;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BE83812A1AEFE664A61216704FBA4D5A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E77E894B286DE2AD0763DACF600BA580 /* Pods-KRClient_Tests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -668,7 +561,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-KRClient_Tests/Pods-KRClient_Tests.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -676,6 +569,106 @@
 				PRODUCT_NAME = Pods_KRClient_Tests;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D99DCDA95A5510C9AEC9BD0792E81E7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC00EBC95014A10CFF8DB5222D4DD611 /* KRClient.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/KRClient/KRClient-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/KRClient/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/KRClient/KRClient.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = KRClient;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		EBEBD15F133AB0C71D64109E1FEE79D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EA9ED963114E7CE8F26539C953224C07 /* Pods-KRClient_Example.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-KRClient_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-KRClient_Example/Pods-KRClient_Example.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_KRClient_Example;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		ECF1FE75C24C29FAC55F3F969B3047AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC00EBC95014A10CFF8DB5222D4DD611 /* KRClient.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/KRClient/KRClient-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/KRClient/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/KRClient/KRClient.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = KRClient;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -686,38 +679,38 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0BFF2EB405CCCB2E0EC11309FD702DF8 /* Build configuration list for PBXNativeTarget "Pods-KRClient_Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E5BF1C0D841DFDA54523ED256ADE082A /* Debug */,
-				70635704F57884E227BF542DDEBA6AD2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2960C029A2B7BB11DD579AC6DFEB7BB2 /* Build configuration list for PBXNativeTarget "Pods-KRClient_Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8603E25D66016F4E7C22CA1047020653 /* Debug */,
-				4B4C808DEF153859AA83A0A19C4CA86F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D3E3D092A3FF7311A98E44BBA36FFD12 /* Debug */,
-				0ACDCBCB0B6796575F46FFA2F5410C6B /* Release */,
+				9E1E4E48AF2EAB23169E611BF694090A /* Debug */,
+				8DED8AD26D381A6ACFF202E5217EC498 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A6E871C9E6762517B83798922E442CA2 /* Build configuration list for PBXNativeTarget "KRClient" */ = {
+		538122AD0A7BF5F6087E1B983C78B72B /* Build configuration list for PBXNativeTarget "Pods-KRClient_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AC1357B3B98152DC08703599FB76B7A6 /* Debug */,
-				0F2824C9CA6E30EF4D19D0C7BE503E25 /* Release */,
+				483A2D80EADF012030AD3F6A07DF589D /* Debug */,
+				BE83812A1AEFE664A61216704FBA4D5A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6BF85C3EA1AD6D325C6555DBE07D4CFE /* Build configuration list for PBXNativeTarget "KRClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECF1FE75C24C29FAC55F3F969B3047AD /* Debug */,
+				D99DCDA95A5510C9AEC9BD0792E81E7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		898B062409ED9DBD38B595A8848ED0CC /* Build configuration list for PBXNativeTarget "Pods-KRClient_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBEBD15F133AB0C71D64109E1FEE79D9 /* Debug */,
+				B4F0DFF195F9C9E54677A0E93FA6974F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

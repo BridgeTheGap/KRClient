@@ -8,13 +8,13 @@
 
 import UIKit
 
-public extension String {
+internal extension String {
     
-    struct Substring {
+    internal struct Substring {
         var start: Int?
         var string: String
         
-        public subscript(end: Int?) -> String {
+        internal subscript(end: Int?) -> String {
             let start = self.start ?? 0
             let end = end ?? string.characters.count
             guard end < 0 ? string.characters.count > start + abs(end) : start < end && end <= string.characters.count else { return "" }
@@ -27,7 +27,7 @@ public extension String {
         }
     }
     
-    public subscript(start: Int?) -> Substring {
+    internal subscript(start: Int?) -> Substring {
         return Substring(start: start, string: self)
     }
     
