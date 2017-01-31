@@ -8,9 +8,10 @@
 
 public enum HTTPMethod: String {
     
-    case GET = "GET"
+    case GET  = "GET"
     case HEAD = "HEAD"
     case POST = "POST"
+    case PUT  = "PUT"
     
 }
 

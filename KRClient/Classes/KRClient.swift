@@ -225,7 +225,7 @@ open class KRClient: NSObject {
                     }
                     return URLRequest(url: url)
                     
-                case .POST:
+                case .POST, .PUT:
                     guard let url = URL(string: urlString) else {
                         throw KRClientError.stringToURLConversionFailure(string: urlString)
                     }
@@ -308,13 +308,13 @@ open class KRClient: NSObject {
                 var alternative: Request?
                 
                 do {
-                    guard let data = optData, !data.isEmpty else {
-                        throw optError ?? NSError(domain: KRClientError.Domain.response,
-                                                  code: KRClientError.ErrorCode.unknown,
-                                                  userInfo: [KRClientError.UserInfoKey.urlResponse: optResponse as Any])
-                    }
+                    guard let data = optData, optError == nil else { throw optError! }
                     
-                    let response = optResponse as! HTTPURLResponse
+                    guard let response = optResponse as? HTTPURLResponse else {
+                        throw NSError(domain: KRClientError.Domain.response,
+                                      code: KRClientError.ErrorCode.unknown,
+                                      userInfo: [KRClientError.UserInfoKey.urlResponse: optResponse as Any])
+                    }
                     
                     if let validation = request.responseTest?(data, response) {
                         guard validation.error == nil, validation.alternative == nil else {
