@@ -13,12 +13,16 @@ public enum KRClientSuccessHandler {
     case data((_ data: Data, _ response: URLResponse) -> Void)
     case json((_ json: [String: Any], _ response: URLResponse) -> Void)
     case string((_ string: String, _ response: URLResponse) -> Void)
+    case response((_ response: URLResponse) -> Void)
+    case none
     
 }
 
 public enum KRClientFailureHandler {
     
     case failure((_ error: NSError, _ response: URLResponse?) -> Void)
+    case response((_ response: URLResponse?) -> Void)
+    case none
     
 }
 
@@ -325,18 +329,16 @@ open class KRClient: NSObject {
                     
                     delegate?.client(self, willFinish: request, at: counter, withSuccess: true)
                     
-                    guard let successHandler = request.successHandler else { groupRequestHandler?.success(); return }
-                    
-                    switch request.successHandler! {
+                    switch request.successHandler ?? .none {
                         
                     case .data(let handler):
-                        handler(data, optResponse!)
+                        handler(data, response)
                         
                     case .json(let handler):
                         guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
                             throw KRClientError.dataConversionFailure(type: [String: Any].self)
                         }
-                        handler(json, optResponse!)
+                        handler(json, response)
                         
                     case .string(let handler):
                         let encoding: UInt = {
@@ -353,7 +355,10 @@ open class KRClient: NSObject {
                         }
                         
                         handler(string, optResponse!)
-                        
+                    case .response(let handler):
+                        handler(response)
+                    case .none:
+                        break
                     }
                     
                     delegate?.client(self, didFinish: request, at: counter, withSuccess: true)
@@ -363,8 +368,15 @@ open class KRClient: NSObject {
                     delegate?.client(self, willFinish: request, at: counter, withSuccess: false)
                     
                     guard let failureHandler = request.failureHandler else { return }
-                    guard case KRClientFailureHandler.failure(let handler) = failureHandler else { fatalError() }
-                    handler(error as NSError, optResponse)
+                    
+                    switch failureHandler {
+                    case .failure(let handler):
+                        handler(error as NSError, optResponse)
+                    case .response(let handler):
+                        handler(optResponse)
+                    case .none:
+                        break
+                    }
                     
                     defer {
                         delegate?.client(self, didFinish: request, at: counter, withSuccess: false)
