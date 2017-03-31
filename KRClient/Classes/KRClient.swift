@@ -367,13 +367,14 @@ open class KRClient: NSObject {
                 } catch let error {
                     delegate?.client(self, willFinish: request, at: counter, withSuccess: false)
                     
-                    guard let failureHandler = request.failureHandler else { return }
-                    
-                    switch failureHandler {
+                    switch request.failureHandler ?? .none {
+                        
                     case .failure(let handler):
                         handler(error as NSError, optResponse)
+                        
                     case .response(let handler):
                         handler(optResponse)
+                        
                     case .none:
                         break
                     }

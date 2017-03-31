@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KRClient'
-  s.version          = '0.9.2'
+  s.version          = '0.9.3'
   s.summary          = 'A light-weight yet powerful network client.'
 
 # This description is used to generate tags and improve search results.

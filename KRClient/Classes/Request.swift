@@ -263,7 +263,7 @@ public struct Request: RequestType {
     public func apply(templateWithID id: String?) -> Request {
         var req = self
         guard let template = KRClient.shared.templates[id ?? kDEFAULT_API_ID] else {
-            fatalError("<KRClient> There are no registered templates with the ID: \(id).")
+            fatalError("<KRClient> There are no registered templates with the ID: \(id ?? kDEFAULT_API_ID).")
         }
         
         (req.responseTest, req.successHandler, req.failureHandler, req.queue) =
