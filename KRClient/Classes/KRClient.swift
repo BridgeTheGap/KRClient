@@ -196,7 +196,7 @@ open class KRClient: NSObject {
         }
     }
     
-    open func getURLRequest(withID identifier: String = kDEFAULT_API_ID, for api: API, parameters: [String: Any]? = nil) throws -> URLRequest {
+    open func getURLRequest(withID identifier: String = "com.KRClient.defaultID", for api: API, parameters: [String: Any]? = nil) throws -> URLRequest {
         guard let strHost = hosts[identifier] else {
             let message = identifier == kDEFAULT_API_ID ?
                 "<KRClient> There is no default host set." :

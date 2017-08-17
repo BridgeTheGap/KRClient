@@ -1,16 +1,16 @@
 PODS:
-  - KRClient (0.8.6)
+  - KRClient (1.0.0)
 
 DEPENDENCIES:
   - KRClient (from `../`)
 
 EXTERNAL SOURCES:
   KRClient:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  KRClient: ce05057e45a918e892a3ed5a608b5556988d6996
+  KRClient: 3e6392c9b1df5d531b8c3e6ebf194dcf520acbb2
 
 PODFILE CHECKSUM: 60bcf18c69e6654d417d5bf3695098407b7c997d
 
-COCOAPODS: 1.2.0.beta.1
+COCOAPODS: 1.3.1
