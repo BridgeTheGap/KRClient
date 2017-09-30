@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KRClient'
-  s.version          = '1.0.0'
+  s.version          = '1.1.0'
   s.summary          = 'A light-weight yet powerful network client.'
 
 # This description is used to generate tags and improve search results.
@@ -31,7 +31,7 @@ Some key features include data validating, serialized URL requests where the req
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'KRClient/Classes/**/*'
+  s.source_files = 'KRClient/Classes/**/*', 'KRClient/Protocols/**/*', 'KRClient/Extensions/**/*'
   
   # s.resource_bundles = {
   #   'KRClient' => ['KRClient/Assets/*.png']

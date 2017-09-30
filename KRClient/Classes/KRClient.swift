@@ -28,17 +28,6 @@ public enum KRClientFailureHandler {
 
 let kDEFAULT_API_ID = "com.KRClient.defaultID"
 
-public struct Position: CustomStringConvertible {
-    
-    public var index: Int
-    public var count: Int
-    
-    public var description: String {
-        return "\(index + 1) of \(count)"
-    }
-    
-}
-
 fileprivate class GroupRequestHandler {
     
     let mode: GroupRequestMode
@@ -60,50 +49,6 @@ public enum GroupRequestMode {
     case ignore
     case recover
     
-}
-
-public protocol KRClientDelegate: class {
-    
-    func client(_ client: KRClient, willMake request: Request, at position: Position?)
-    func client(_ client: KRClient, didMake request: Request, at position: Position?)
-    func client(_ client: KRClient, willFinish request: Request, at position: Position?, withSuccess isSuccess: Bool)
-    func client(_ client: KRClient, didFinish request: Request, at position: Position?, withSuccess isSuccess: Bool)
-    
-    func client(_ client: KRClient, willBegin groupRequest: [RequestType])
-    func client(_ client: KRClient, didFinish groupRequest: [RequestType])
-    
-}
-
-public protocol NetworkIndicatorDelegate: KRClientDelegate {}
-
-public extension NetworkIndicatorDelegate {
-    public func client(_ client: KRClient, willMake request: Request, at index: Position?) {
-        if let indicatorView = client.indicatorView, index == nil {
-            DispatchQueue.main.async { UIApplication.shared.keyWindow?.addSubview(indicatorView) }
-        }
-    }
-    
-    public func client(_ client: KRClient, didMake request: Request, at index: Position?) { }
-    
-    public func client(_ client: KRClient, willFinish request: Request, at index: Position?, withSuccess isSuccess: Bool) { }
-    
-    public func client(_ client: KRClient, didFinish request: Request, at index: Position?, withSuccess isSuccess: Bool) {
-        if let indicatorView = client.indicatorView, index == nil {
-            DispatchQueue.main.async { indicatorView.removeFromSuperview() }
-        }
-    }
-    
-    public func client(_ client: KRClient, willBegin groupRequest: [RequestType]) {
-        if let indicatorView = client.indicatorView {
-            DispatchQueue.main.async { UIApplication.shared.keyWindow?.addSubview(indicatorView) }
-        }
-    }
-    
-    public func client(_ client: KRClient, didFinish groupRequest: [RequestType]) {
-        if let indicatorView = client.indicatorView {
-            DispatchQueue.main.async { indicatorView.removeFromSuperview() }
-        }
-    }
 }
 
 open class KRClient: NSObject {

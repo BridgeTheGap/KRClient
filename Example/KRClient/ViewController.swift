@@ -71,6 +71,7 @@ fileprivate extension UIColor {
 class ViewController: UIViewController, NetworkIndicatorDelegate {
     
     @IBOutlet weak var indicatorView: UIView?
+    var indicatorWindow: UIView? { return UIApplication.shared.keyWindow }
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -106,6 +107,10 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
         
         KRClient.shared.indicatorView = indicatorView
         indicatorView?.removeFromSuperview()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         // Checking HEAD..
         KRClient.shared.make(httpRequest: try! Request(method: .HEAD, urlString: "https://httpbin.org/get").data({ (data, response) in
