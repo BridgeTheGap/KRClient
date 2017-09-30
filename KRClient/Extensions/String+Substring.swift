@@ -23,7 +23,7 @@ internal extension String {
             let startIndex = start < 0 ? string.characters.index(string.endIndex, offsetBy: start) : string.characters.index(string.startIndex, offsetBy: start)
             let endIndex = end < 0 ? string.characters.index(string.endIndex, offsetBy: end) : string.characters.index(string.startIndex, offsetBy: end)
             
-            return startIndex > endIndex ? "" : string.substring(with: startIndex ..< endIndex)
+            return startIndex > endIndex ? "" : String(string[startIndex ..< endIndex])
         }
     }
     

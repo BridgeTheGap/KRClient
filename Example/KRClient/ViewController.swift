@@ -98,10 +98,10 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
                 return response.statusCode == 200
             })
             .string({ (_, response) in
-                print(response.url)
+                print(String(describing: response.url))
             })
             .failure({ (err, response) in
-                print(err, response)
+                print(err, String(describing: response))
             })
         KRClient.shared.set(defaultTemplate: template)
         
@@ -116,14 +116,14 @@ class ViewController: UIViewController, NetworkIndicatorDelegate {
         KRClient.shared.make(httpRequest: try! Request(method: .HEAD, urlString: "https://httpbin.org/get").data({ (data, response) in
             print("SUCCESS", data, response)
         }).failure({ (error, response) in
-            print("FAILURE", error, response)
+            print("FAILURE", error, String(describing: response))
         }))
         
         // Checking conditional GET...
         var req = try! Request(method: .HEAD, urlString: "http://www.example.com/").data({ (data, response) in
             print("SUCCESS", data, response)
         }).failure({ (error, response) in
-            print("FAILURE", error, response)
+            print("FAILURE", error, String(describing: response))
         })
         req.urlRequest.addValue("Tue, 31 Jan 2017 09:00:00 GMT", forHTTPHeaderField: "If-modified-since")
         
