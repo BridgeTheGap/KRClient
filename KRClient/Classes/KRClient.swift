@@ -126,10 +126,7 @@ open class KRClient: NSObject {
         
         switch baseRequest.httpMethod ?? "GET" {
         case "POST":
-            guard let url = URL(string: urlString) else {
-                throw KRClientError.stringToURLConversionFailure(string: urlString)
-            }
-            var request = URLRequest(url: url)
+            var request = baseRequest
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters)
             return request
         default:
@@ -243,7 +240,9 @@ open class KRClient: NSObject {
         var request = request
         
         if request.shouldSetParameters {
-            request.setParameters()
+            let urlRequest = try! getURLRequest(from: request.urlRequest,
+                                                parameters: request.parameters!())
+            request.urlRequest = urlRequest
         }
         
         let delegateQueue = request.queue ?? DispatchQueue.main

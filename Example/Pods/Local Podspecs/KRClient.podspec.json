@@ -1,6 +1,6 @@
 {
   "name": "KRClient",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "summary": "A light-weight yet powerful network client.",
   "description": "KRClient is an easy-to-use yet powerful networking library.\nSome key features include data validating, serialized URL requests where the requests can take advatange of the returned data from the previous requests.",
   "homepage": "https://github.com/BridgeTheGap/KRClient",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/BridgeTheGap/KRClient.git",
-    "tag": "1.1.1"
+    "tag": "1.1.2"
   },
   "platforms": {
     "ios": "8.0"

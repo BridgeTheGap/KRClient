@@ -16,12 +16,12 @@ internal extension String {
         
         internal subscript(end: Int?) -> String {
             let start = self.start ?? 0
-            let end = end ?? string.characters.count
-            guard end < 0 ? string.characters.count > start + abs(end) : start < end && end <= string.characters.count else { return "" }
+            let end = end ?? string.count
+            guard end < 0 ? string.count > start + abs(end) : start < end && end <= string.count else { return "" }
             guard !string.isEmpty else { return string }
             
-            let startIndex = start < 0 ? string.characters.index(string.endIndex, offsetBy: start) : string.characters.index(string.startIndex, offsetBy: start)
-            let endIndex = end < 0 ? string.characters.index(string.endIndex, offsetBy: end) : string.characters.index(string.startIndex, offsetBy: end)
+            let startIndex = start < 0 ? string.index(string.endIndex, offsetBy: start) : string.index(string.startIndex, offsetBy: start)
+            let endIndex = end < 0 ? string.index(string.endIndex, offsetBy: end) : string.index(string.startIndex, offsetBy: end)
             
             return startIndex > endIndex ? "" : String(string[startIndex ..< endIndex])
         }

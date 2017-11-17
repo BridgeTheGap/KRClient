@@ -112,8 +112,8 @@ public struct RequestTemplate {
 
 public struct Request: RequestType {
     
-    public var urlRequest: URLRequest
-    private var parameters: (() -> [String: Any])?
+    public internal(set) var urlRequest: URLRequest
+    internal private(set) var parameters: (() -> [String: Any])?
     
     public var shouldSetParameters: Bool { return parameters != nil }
     
@@ -272,10 +272,6 @@ public struct Request: RequestType {
         return req
     }
     
-    internal mutating func setParameters() {
-        urlRequest = try! KRClient.shared.getURLRequest(from: urlRequest, parameters: parameters!())
-        parameters = nil
-    }
 }
 
 // MARK: - Batch Request

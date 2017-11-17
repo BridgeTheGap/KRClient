@@ -1,5 +1,5 @@
 PODS:
-  - KRClient (1.1.1)
+  - KRClient (1.1.2)
 
 DEPENDENCIES:
   - KRClient (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  KRClient: 38901cd6a76fc20bc14a20644734ac66141115df
+  KRClient: 4a7d8ab7d3076bc3805183d0722517abf5090780
 
 PODFILE CHECKSUM: 60bcf18c69e6654d417d5bf3695098407b7c997d
 
